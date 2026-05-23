@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <style>
+        body {
+            font-family:'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #F9F9FA;
+            display: flex;
+        }
+        .profile {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin-bottom: 1em;
+            margin-left: 45px;
+            object-fit: cover;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #2A0764;
+            padding: 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+        }
+        .sidebar h2 {
+            margin-bottom: 30px;
+            color: white;           
+            text-align: center;
+        }
+        .sidebar p {
+            color: white;
+            text-align: center;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar li {
+            margin-bottom: 10px;
+        }
+        .sidebar a {
+            display: flex;
+            padding: 10px;
+            text-decoration: none;
+            color: white;
+            border-radius: 5px;
+            height: fit-content;
+        }
+        .sidebar a:hover {
+            color: #555;
+            background: #F5F5F5;
+        }
+        .sidebar i {
+            margin-right: 10px;
+        }
+        .report-content {
+            margin-left: 310px;
+            padding: 20px;
+            font-size: 15px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .header h2 {
+            color: #333;
+        }
+        .header .user-info {
+            text-align: right;
+        }
+        .header i {
+            margin-right: 20px;
+            font-size: 20px;
+            color: #333;
+        }
+        .statistics-section {
+            align-items: center;
+            padding: 15px;
+            font-size: 15px;
+            width: 880px;
+            background-color: #F9F9FA;
+            outline: 3px solid #1F054B;
+            border-radius: 20px;
+            min-height: 600px;
+        }
+        .chart-container {
+            width: 60%;
+            height: 300px;
+            text-align: center;
+        }
+        .tips-container {
+            width: 30%;
+            height: 300px;
+            background: #F7F7F7;
+            text-align: center;
+            line-height: 100px;
+            color: #999;
+            border: 1px dashed #ccc;
+        }
+        .tips-container button {
+            padding: 10px 20px;
+            background: #2F4F7F;
+            color: white;
+            border: none;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+        .transaction-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .transaction-table th, .transaction-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .transaction-table th {
+            background-color: #f2f2f2;
+        }
+        .transaction-table .delete-transaction {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .transaction-table .delete-transaction:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+   <div class="sidebar">
+        <a href="profile PT.html" style="background-color: #2A0764;">
+            <img id="navProfileImg" src="c:\Users\acer\Downloads\e183fad7-9c43-49e0-b3d7-2d4770ad4dfb.jpg"
+                class="profile" alt="profile">
+            <i style="margin-top: 125px;" class="fa-solid fa-pen-to-square"></i>
+        </a>
+        <h2 id="fullName">Patricia Bernales</h2>
+        <p id="userEmail">@bernales</p>
+        <ul>
+            <li><a href="dashboard.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+            <li><a href="report.html"><i class="fa-solid fa-chart-line"></i>Reports</a></li>
+            <li><a href="budgeting.html"><i class="fa-solid fa-wallet"></i>Budgeting</a></li>
+            <p>_____________________________</p>
+            <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
+            <li><a href="help.html"><i class="fa-solid fa-circle-question"></i>Help</a></li>
+            <li><a href="#" id="delete-data"><i class="fa-solid fa-trash"></i>Delete all data</a></li>
+            <li><a href="homepage.html"><i class="fa-solid fa-right-from-bracket"></i>Log out</a></li>
+        </ul>
+    </div>
+    <div class="report-content">
+        <div class="header">
+            <h2 id="page-title">Report</h2>
+            <div class="user-info">
+                <input type="text" id="search" placeholder="&#128269; Search here...">
+                <i class="fa-solid fa-bell"></i>
+                <a href="calendar.html"><i class="fa-solid fa-calendar"></i></a>
+            </div>
+        </div>
+         
+        <div class="statistics-section">
+            <h2>Detailed Spending Report</h2>
+            <div style="display: flex; justify-content: space-between;">
+                <div class="chart-container">
+                    <canvas id="expenseChart"></canvas>
+                </div>
+                <div class="tips-container">
+                    <button id="generate-tips">Generate Tips</button>
+                </div>
+            </div>
+
+            <h2 style="margin-top: 20px;">Transaction History</h2>
+            <div class="section">
+                <div class="budget" id="transactionHistory">No history yet. Go to Budgeting tab to set up.</div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const userProfile = JSON.parse(localStorage.getItem("userProfile"));
+
+        if (!userProfile) return;
+
+        const fullName = `${userProfile.firstName} ${userProfile.lastName}`;
+
+        // Update full name
+        const nameEl = document.getElementById("fullName");
+        if (nameEl) nameEl.textContent = fullName;
+
+        // Update email
+        const emailEl = document.getElementById("userEmail");
+        if (emailEl) emailEl.textContent = userProfile.email;
+
+        // Update profile image
+        const imgEl = document.getElementById("navProfileImg");
+        if (imgEl) imgEl.src = userProfile.profileImg;
+    });
+    
+    document.getElementById("search").addEventListener("keydown", function(event) {
+        if(event.key === "Enter") {
+            const query = this.value.toLowerCase().trim();
+            const pages = {
+                "dashboard": "dashboard.html", "home": "dashboard.html",
+                "report": "report.html", "reports": "report.html",
+                "budget": "budgeting.html", "budgeting": "budgeting.html",
+                "setting": "settings.html", "settings": "settings.html",
+                "help": "help.html", "support": "help.html",
+                "calendar": "calendar.html", "date": "calendar.html",
+                "reminder": "reminder.html", "reminders": "reminder.html",
+                "documentation": "help.html",
+                "privacy": "reminder.html", "policy": "reminder.html",
+                "expense": "budgeting.html", "income": "budgeting.html",
+                "goal": "budgeting.html", "limit": "budgeting.html",
+                "terms": "settings.html", "use": "settings.html",
+                "logout": "homepage.html", "log out": "homepage.html"
+            };
+            for(let k in pages) {
+                if(query.includes(k)) { window.location.href = pages[k]; return; }
+            }
+            alert("No page found related to: " + query);
+        }
+    });
+
+    document.getElementById("delete-data").addEventListener("click", () => {
+        if(confirm("Are you sure you want to delete all data?")) {
+            localStorage.clear();
+            alert("Data deleted successfully!");
+            location.reload();
+        }
+    });
+
+    const transactionHistorySection = document.getElementById("transactionHistory");
+    let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+    let incomes = JSON.parse(localStorage.getItem("incomes")) || [];
+    let expenseChart = null;
+
+    function formatCurrency(amount) {
+        return '₱' + parseFloat(amount).toFixed(2);
+    }
+
+    function displayTransactionHistory() {
+        transactionHistorySection.innerHTML = "";
+        if(transactions.length === 0 && incomes.length === 0){
+            transactionHistorySection.textContent = "No history yet. Go to Budgeting tab to set up.";
+            return;
+        }
+        const table = document.createElement("table");
+        table.classList.add("transaction-table");
+        table.innerHTML = `
+            <thead>
+                <tr>
+                    <th>Type</th><th>Category</th><th>Amount</th><th>Date</th><th>Time</th><th>Delete</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        `;
+        transactionHistorySection.appendChild(table);
+        const tbody = table.querySelector("tbody");
+        const allTransactions = [...transactions.map(t => ({...t, _type: 'expense'})), ...incomes.map(t => ({...t, _type: 'income'}))];
+        allTransactions.forEach((t,index) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${t._type}</td>
+                <td>${t.category}</td>
+                <td>${formatCurrency(t.amount)}</td>
+                <td>${t.date||""}</td>
+                <td>${t.time||""}</td>
+                <td><button class="delete-transaction" data-index="${index}" data-type="${t._type}">Delete</button></td>
+            `;
+            tbody.appendChild(row);
+        });
+
+        document.querySelectorAll(".delete-transaction").forEach(btn=>{
+            btn.addEventListener("click", () => {
+                const idx = parseInt(btn.dataset.index);
+                const type = btn.dataset.type;
+                if(type === "income") incomes.splice(idx-transactions.length,1);
+                else transactions.splice(idx,1);
+                localStorage.setItem("transactions", JSON.stringify(transactions));
+                localStorage.setItem("incomes", JSON.stringify(incomes));
+                displayTransactionHistory();
+                generateChart();
+            });
+        });
+    }
+
+    function generateChart() {
+        const ctx = document.getElementById("expenseChart").getContext("2d");
+        const categoryTotals = {};
+        const categoryColors = {};
+        transactions.forEach(t=>{
+            categoryTotals[t.category] = (categoryTotals[t.category]||0)+Number(t.amount);
+            categoryColors[t.category] = "#F44336";
+        });
+        incomes.forEach(i=>{
+            categoryTotals[i.category] = (categoryTotals[i.category]||0)+Number(i.amount);
+            categoryColors[i.category] = "#4CAF50";
+        });
+
+        const labels = Object.keys(categoryTotals);
+        const data = Object.values(categoryTotals);
+        const colors = labels.map(l=>categoryColors[l]);
+        if(expenseChart) expenseChart.destroy();
+        if(labels.length===0) return;
+        expenseChart = new Chart(ctx,{
+            type:"pie",
+            data:{labels:labels,datasets:[{data:data,backgroundColor:colors,borderWidth:1}]},
+            options:{
+                responsive:true,
+                plugins:{
+                    legend:{position:"bottom"},
+                    datalabels:{
+                        formatter:(value,context)=>{
+                            const total = context.chart.data.datasets[0].data.reduce((a,b)=>a+b,0);
+                            const percent = ((value/total)*100).toFixed(1);
+                            return `${context.chart.data.labels[context.dataIndex]} (${percent}%)`;
+                        },
+                        color:"#fff",
+                        font:{weight:"bold",size:12}
+                    }
+                }
+            },
+            plugins:[ChartDataLabels]
+        });
+    }
+
+    displayTransactionHistory();
+    generateChart();
+    document.getElementById("generate-tips").addEventListener("click",()=>{
+        alert("Tips generation placeholder!");
+    });
+</script>
+</body>
+</html>

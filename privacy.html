@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+</head>
+<style>
+    .body {
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #F9F9FA;
+    }
+
+    .profile {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        margin-bottom: 1em;
+        margin-left: 45px;
+    }
+
+    .sidebar {
+        width: 250px;
+        background-color: #2A0764;
+        padding: 20px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+    }
+
+    .sidebar h2 {
+        margin-bottom: 30px;
+        color: white;
+        text-align: center;
+    }
+
+    .sidebar p {
+        color: white;
+        text-align: center;
+    }
+
+    .sidebar ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .sidebar li {
+        margin-bottom: 10px;
+    }
+
+    .sidebar a {
+        display: flex;
+        padding: 10px;
+        text-decoration: none;
+        color: white;
+        border-radius: 5px;
+        height: fit-content;
+    }
+
+    .sidebar a:hover {
+        color: #555;
+        background: #F5F5F5;
+    }
+
+    .sidebar i {
+        margin-right: 10px;
+    }
+
+    .dashboard-content {
+        margin-left: 300px;
+        padding: 0px;
+        font-size: 15px;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 5px;
+    }
+    .header h2 {
+        color: #333;
+    }
+
+    .header .user-info {
+        text-align: right;
+    }
+
+    .header i {
+        margin-right: 20px;
+        font-size: 20px;
+        color: #333;
+    }
+    .setting-content {
+        align-items: center;
+        margin-left: 320px;
+        margin-top: 20px;
+        padding: 15px;
+        font-size: 15px;
+        width: 880px;
+        background: white;
+        outline:3px solid #1F054B;
+        border-radius: 20px;
+        line-height: 0.8;
+        height: 620px;
+        position: fixed;
+    }
+    .section {
+        text-decoration: none;
+        color: black;
+        margin-left: 20px;
+        font-size: large;
+        padding: 5px;
+        border-radius: 10px;
+    }
+    .section:hover {
+        background-color: lightgrey;
+        
+    }
+</style>
+<body>
+    <div class="sidebar">
+       <a href="profile PT.html" style="background-color: #2A0764;">
+            <img id="navProfileImg" src="c:\Users\acer\Downloads\e183fad7-9c43-49e0-b3d7-2d4770ad4dfb.jpg" class="profile" alt="profile">
+            <i style="margin-top: 125px;" class="fa-solid fa-pen-to-square"></i>
+        </a>
+        <h2 id="fullName">Patricia Bernales</h2>
+        <p id="userEmail">@bernales</p>
+        <ul>
+            <li><a href="dashboard.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+            <li><a href="report.html"><i class="fa-solid fa-chart-line"></i>Reports</a></li>
+            <li><a href="budgeting.html"><i class="fa-solid fa-wallet"></i>Budgeting</a></li>
+            <p>_____________________________</p>
+            <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
+            <li><a href="help.html"><i class="fa-solid fa-circle-question"></i>Help</a></li>
+            <li><a href="" id="delete-data"><i class="fa-solid fa-trash"></i>Delete all data</a></li>
+            <li><a href="homepage.html"><i class="fa-solid fa-right-from-bracket"></i>Log out</a></li>
+        </ul>
+    </div>
+    <div id="dashboard-content" class="dashboard-content">
+        <div class="header">
+            <h2 id="page-title">Settings</h2>
+            <div class="user-info">
+                <input type="text" id="search" placeholder="&#128269; Search here...">
+                <i class="fa-solid fa-bell"></i>
+                <a href="calendar.html">
+                    <i class="fa-solid fa-calendar"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="setting-content">
+        <div class="setting-section">
+            <a class="section" href="settings.html">Terms of use</a>
+            <a class="section" href="privacy.html"> Privacy Policy</a>
+            <a class="section" href="about.html">About Us</a>
+            <a class="section" href="reminder.html">Reminder</a>
+            <br><br><hr>
+        </div>
+        <p id="Terms" style="line-height: 1; font-size: medium; 
+        overflow-y: scroll; height: 575px; ">
+        <b>Privacy Policy for - Money Tracker</b>
+        <br><br><b>Privacy Policy</b> <br>
+        <br>Horoscope365 built the Money Tracker app as an Ad Supported app. This SERVICE is provided by Horoscope365 at no cost and is intended for use as is.This page is used to inform visitors regarding my policies with the collection, use, and disclosure of Personal Information if anyone decided to use my Service
+        <br>If you choose to use my Service, then you agree to the collection and use of information in relation to this policy. The Personal Information that I collect is used for providing and improving the Service. I will not use or share your information with anyone except as described in this Privacy Policy. The terms used in this Privacy Policy have the same meanings as in our Terms and Conditions, which are accessible at Money Tracker unless otherwise defined in this Privacy Policy.
+        <br><br><b>Information Collection and Use</b> <br> 
+        <br>While using Our Service, We may ask You to provide Us with certain personally identifiable information that can be used to contact or identify You. Personally identifiable information may include, but is not limited to:Email address,First name and last name,Usage Data For a better experience, while using our Service, I may require you to provide us with certain personally identifiable information, including but not limited to Email address, First name and last name, Phone number, Gender, Password or passcode, Usage Data (Hardware model; Information about operating system and its version; Screen size and density; Language and country; Unique device identifiers (e.g. IDFA); Time zone; Device mute status (related to reminder function); Screen Size; OEM Name; Device Model; OS Name; OS Version; OS Build). The information that we request will be retained by us and used as described in this privacy policy
+        <br>The app does use third-party services that may collect information used to identify you.
+        <br><br>We will collect your Primary Account information to create an account in the app. The purpose of the account in the app is to backup and restore your data, so we will upload your Primary account information (including email, First name and last name,nickname,avatar) to our server(https:// money.quhou123.com). If You decide to register through or otherwise grant us access to a Third-Party Social Media Service, We may collect Personal data that is already associated with Your Third-Party Social Media Service's account, such as Your name, Your email address, Your activities or Your contact list associated with that account. You may also have the option of sharing additional information with us through Your Third-Party Social Media Service's account. If You choose to provide such information and Personal Data, during registration or otherwise, You are giving us permission to use, share, and store it in a manner consistent with this Privacy Policy.
+    </p>
+    </div>
+    <script> 
+        document.addEventListener("DOMContentLoaded", () => {
+    const userProfile = JSON.parse(localStorage.getItem("userProfile"));
+
+    if (!userProfile) return;
+
+    const fullName = `${userProfile.firstName} ${userProfile.lastName}`;
+
+    // Update full name
+    const nameEl = document.getElementById("fullName");
+    if (nameEl) nameEl.textContent = fullName;
+
+    // Update email
+    const emailEl = document.getElementById("userEmail");
+    if (emailEl) emailEl.textContent = userProfile.email;
+
+    // Update profile image
+    const imgEl = document.getElementById("navProfileImg");
+    if (imgEl) imgEl.src = userProfile.profileImg;
+});
+        document.getElementById("search").addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+        const query = this.value.toLowerCase().trim();
+
+        // Keyword-to-page mapping
+        const pages = {
+            "dashboard": "dashboard.html",
+            "home": "dashboard.html",
+
+            "report": "report.html",
+            "reports": "report.html",
+
+            "budget": "budgeting.html",
+            "budgeting": "budgeting.html",
+
+            "setting": "settings.html",
+            "settings": "settings.html",
+
+            "help": "help.html",
+            "support": "help.html",
+
+            "calendar": "calendar.html",
+            "date": "calendar.html",
+
+            "reminder": "reminder.html",
+            "reminders": "reminder.html",
+
+            "help": "help.html",
+            "documentation": "help.html",
+
+            "privacy": "reminder.html",
+            "policy": "reminder.html",
+
+            "enpense": "budgeting.html",
+            "income": "budgeting.html",
+            "goal": "budgeting.html",
+            "limit": "budgeting.html",
+
+            "terms": "settings.html",
+            "use": "settings.html",
+            "term": "settings.html",
+            "conditions": "settings.html",
+
+            "logout": "homepage.html",
+            "log out": "homepage.html"
+        };
+
+        // Find matching page
+        for (let keyword in pages) {
+            if (query.includes(keyword)) {
+                window.location.href = pages[keyword];
+                return;
+            }
+        }
+
+        // If no match found
+        alert("No page found related to: " + query);
+    }
+});
+</script>
+</html>

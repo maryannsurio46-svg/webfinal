@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In</title>
+    <style>
+        /* (Keep the same styles as before, but remove the parts related to toggling forms and the Fullname input) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #c7cffd;
+            display: flex;
+            text-align:center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 40px;
+        }
+
+        .container{
+            display:flex;
+            width:100%;
+            max-width: 1000px;
+            min-height: 600px;
+            background-color: #c7cffd;
+            border: radius 10px;
+
+        }
+
+        .item{
+            flex-grow:1;
+            flex-basis:200;
+        }
+
+        .welcome-section {
+            flex: 1;
+            background: linear-gradient(135deg, #4285f4 0%, #3367d6 100%);
+            color: white;
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .welcome-section h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .form-section {
+            flex: 1;
+            padding: 60px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h3 {
+            color:#155724;
+            margin-bottom:20px ;
+            font-weight: 700;
+
+        }
+
+        .header h2 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .header p a {
+            color: #4285f4;
+            text-decoration: none;
+        }
+
+        .form-container {
+            width: 90%;
+        }
+
+        .google-btn {
+            align-items: center;
+            justify-content: center;
+            width: 40%;
+            padding: 10px 20px;
+            background-color: rgb(207, 207, 207);
+            border: 1px solid #050505;
+            border-radius: 10px;
+            font-size: 16px;
+            margin-bottom:35px;
+        }
+
+        .google-btn img {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            align-items: center;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 25px 0;
+            position: relative;
+        }
+
+        .divider::before {
+            content: "";
+            position:absolute;
+            top: 60%;
+            left: 300px;
+            right: 300px;
+            height: 1px;
+            background-color: #0f03034e;
+        }
+
+        .divider span {
+            padding: 0 20px;
+            color: #040303;
+            font-size: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 40%;
+            padding: 10px;
+            border: 1px solid #030303;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: #4285f4;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
+        }
+
+        .submit-btn {
+            width: 40%;
+            padding: 10px;
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #3367d6;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+        }
+
+        .terms {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 13px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .terms a {
+            color: #4285f4;
+            text-decoration: none;
+        }
+    .message {
+        display: none;
+        padding: 12px;
+        border-radius: 8px;
+        font-weight: bold;
+    }
+
+    .success {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+    .error {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+
+    </style>
+</head>
+<body>
+<div class="container">
+<button style="text-align:left; background:#c7cffd; height: 30px; width:30px; font-size:40px; border: none; " onclick="history.back()"><</button>
+    <div class="form-section">
+        <div class="header">
+            <h3>Money<br> Tracker<br/></h3>
+            <h2>Log In</h2>
+            <p>Need an account? <a href="signup.html">Sign Up</a></p>
+        </div>
+
+        <div class="form-container">
+            <div id="message" class="message"></div>
+
+            <button class="google-btn" id="googleSignIn">
+                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTcuNiA5LjJsLS4xLTEuOEg5djMuNGg0LjhDMTMuNiAxMiAxMyAxMyAxMiAxMy42djIuMmgzYTguOCA4LjggMCAwIDAgMi42LTYuNnoiIGZpbGw9IiM0Mjg1RjQiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIGQ9Ik05IDE4YzIuNCAwIDQuNS0uOCA2LTIuMmwtMy0yLjJhNS40IDUuNCAwIDAgMS04LTIuOUgxVjEzYTkgOSAwIDAgMCA4IDV6IiBmaWxsPSIjMzRBODUzIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNNCAxMC43YTUuNCA1LjQgMCAwIDEgMC0zLjRWNUgxYTkgOSAwIDAgMCAwIDhsMy0yLjN6IiBmaWxsPSIjRkJCQzA1IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNOSAzLjZjMS4zIDAgMi41LjQgMy40IDEuM0wxNSAyLjNBOSA5IDAgMCAwIDEgNWwzIDIuNGE1LjQgNS40IDAgMCAxIDUtMy43eiIgZmlsbD0iI0VBNDMzNSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTAgMGgxOHYxOEgweiIvPjwvZz48L3N2Zz4=" alt="Google">
+                Continue with Google
+            </button>
+
+            <div class="divider">
+                <span>or</span>
+            </div>
+
+            <form id="authForm">
+                <div class="form-group">
+                    <label for="email"></label>
+                    <input type="email" id="email" name="email" placeholder="Email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password"></label>
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                </div>
+
+                <button type="submit" class="submit-btn">Log In</button>
+            </form>
+
+            <div class="terms">
+                By continuing you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const authForm = document.getElementById('authForm');
+    const messageDiv = document.getElementById('message');
+
+    authForm.addEventListener('submit', function(e) {
+
+        e.preventDefault();
+
+        const email =
+            document.getElementById('email').value;
+
+        const password =
+            document.getElementById('password').value;
+
+        // LOGIN LOGIC
+        const storedEmail =
+            localStorage.getItem('email');
+
+        const storedPassword =
+            localStorage.getItem('password');
+
+        if (
+            email === storedEmail &&
+            password === storedPassword
+        ) {
+
+            showMessage(
+                'Logged in successfully! Redirecting to Dashboard...',
+                'success'
+            );
+
+            setTimeout(() => {
+
+                window.location.href =
+                    'dashboard.html';
+
+            }, 1500);
+
+        } else {
+
+            showMessage(
+                'Invalid credentials',
+                'error'
+            );
+        }
+    });
+
+    // ======================================
+    // SHOW MESSAGE
+    // ======================================
+    function showMessage(text, type) {
+
+        messageDiv.textContent = text;
+
+        messageDiv.className =
+            'message ' + type;
+
+        messageDiv.style.display = 'block';
+
+        // CENTER THE MESSAGE
+        messageDiv.style.textAlign = 'center';
+
+        messageDiv.style.margin = '20px auto';
+
+        messageDiv.style.width = '80%';
+
+        setTimeout(() => {
+
+            messageDiv.style.display = 'none';
+
+        }, 5000);
+    }
+</script>
+</body>
+</html>

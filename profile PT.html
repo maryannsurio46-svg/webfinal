@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>My Profile</title>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background: white; 
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 40px;
+    }
+
+    /* Header OUTSIDE the box */
+    .top-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        margin-right:50%;
+    }
+
+    .back-button {
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        padding:20px;
+        text-decoration: none;
+        color:black;
+    }
+
+    .top-header h2 {
+        font-size: 22px;
+        font-weight: bold;
+        margin-left:100px;
+    }
+
+    /* White content box */
+    .container {
+        background: #D2CFE6;
+        width: 900px;
+        height:800px;
+        padding: 35px;
+        border-radius: 15px;
+        box-shadow: 0 3px 14px rgba(0,0,0,0.15);
+    }
+
+    /* Banner */
+    .banner {
+        width: 100%;
+        height: 230px;
+        border-radius: 15px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .banner img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .edit-bg {
+        position: absolute;
+        right: 12px;
+        bottom: 12px;
+        background: #00000080;
+        color: white;
+        padding: 5px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 14px;
+        
+    }
+
+    /* Profile Image */
+    .profile-pic {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 4px solid #fff;
+        position: relative;
+        margin: -55px auto 10px auto;
+    }
+
+    .profile-pic img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .edit-profile {
+        position: absolute;
+        right: 12px;
+        bottom: 12px;
+        background: black;
+        color: white;
+        padding: 5px;
+        border-radius: 50%;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    /* Form layout */
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px 30px;
+        margin-top: 25px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    input {
+        width: 90%;
+        padding: 10px;
+        border-radius: 7px;
+        border: 1px solid #bbbbbb;
+        font-size: 16px;
+    }
+
+    /* Buttons */
+    .buttons {
+        display: flex;
+        justify-content: flex-end;
+        align-items: left;
+        margin-top: 30px;
+        gap: 30px;
+    }
+
+    .cancel-button {
+        background: white;
+        border: none;
+        padding: 10px 25px;
+        border-radius: 7px;
+        font-size: 15px;
+        color: black;
+        cursor: pointer;
+    }
+
+    .cancel-button.clicked {
+        background: none;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    .save-button {
+        background: #b38ad8;
+        border: none;
+        padding: 10px 25px;
+        border-radius: 7px;
+        font-size: 15px;
+        color: black;
+        cursor: pointer;
+    }
+
+     .save-button.clicked {
+
+        background: none;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+     }
+</style>
+</head>
+<body>
+
+<!-- HEADER OUTSIDE BOX -->
+<div class="top-header">
+    <a href="dashboard.html" class="back-button">&#x276E;</a>
+
+    <h2>My Profile</h2>
+</div>
+
+<!-- WHITE BOX -->
+<div class="container">
+
+    <!-- Banner -->
+    <div class="banner">
+        <img id="banner-img" src="c:\Users\acer\Downloads\汉宫春_下扬州（晁冲之体）_文_李文冠（湖南）__一日清闲，向南门买菜，东海垂钩。_人间春山富丽，时雨飘浮。_桃蔬日渐，看白云、苍狗封侯。_天遣使、江湖不平，白头依旧沙鸥。__一入丛林深处，恰伴随虎豹，计议觥筹。_风流渐入白发，谁也难收。_江山依旧，了万事、橘子洲头。_当事者、人生如梦，泥沙俱下扬州。.jpg">
+        <label for="banner-upload" class="edit-bg">&#x270E;</label>
+        <input id="banner-upload" type="file" accept="image/*" hidden>
+    </div>
+
+    <!-- Profile -->
+    <div class="profile-pic">
+        <img id="profile-img" src="c:\Users\acer\Downloads\e183fad7-9c43-49e0-b3d7-2d4770ad4dfb.jpg">
+        <label for="profile-upload" class="edit-profile">&#x270E;</label>
+        <input id="profile-upload" type="file" accept="image/*" hidden>
+    </div>
+
+    <!-- Form -->
+    <div class="form-grid">
+
+        <div>
+            <label>First name</label>
+            <input type="text" id="firstName" placeholder="Type here">
+
+        </div>
+
+        <div>
+            <label>Current Password</label>
+            <input type="password" placeholder="Type here">
+        </div>
+
+        <div>
+            <label>Phone number</label>
+            <input type="tel" id="phone" placeholder="Type here">
+        </div>
+
+        <div>
+            <label>New Password</label>
+            <input type="password" placeholder="Type here">
+        </div>
+
+        <div>
+            <label>Last name</label>
+            <input type="text" id="lastName" placeholder="Type here">
+            
+        </div>
+
+        <div>
+            <label>Confirm Password</label>
+            <input type="confirm-password" placeholder="Type here">
+        </div>
+
+        <div>
+            <label>Email address</label>
+            <input type="email" id="email" placeholder="Type here">
+        </div>
+
+    </div>
+
+    <!-- Buttons -->
+    <div class="buttons">
+        <button class="cancel-button" id="cancelBtn">Cancel</button>
+        <button class="save-button">Save Changes</button>
+    </div>
+
+</div>
+<script>
+    // ===============================
+    // CANCEL BUTTON ANIMATION
+    // ===============================
+    const cancelBtn = document.getElementById("cancelBtn");
+
+    cancelBtn.addEventListener("click", () => {
+        cancelBtn.classList.add("clicked");
+        setTimeout(() => cancelBtn.classList.remove("clicked"), 350);
+    });
+
+    // ===============================
+    // PROFILE IMAGE UPLOAD
+    // ===============================
+    const profileUpload = document.getElementById("profile-upload");
+    const profileImg = document.getElementById("profile-img");
+
+    profileUpload.onchange = () => {
+        const file = profileUpload.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = e => (profileImg.src = e.target.result);
+            reader.readAsDataURL(file);
+        }
+    };
+
+    // ===============================
+    // BANNER IMAGE UPLOAD
+    // ===============================
+    const bannerUpload = document.getElementById("banner-upload");
+    const bannerImg = document.getElementById("banner-img");
+
+    bannerUpload.onchange = () => {
+        const file = bannerUpload.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = e => (bannerImg.src = e.target.result);
+            reader.readAsDataURL(file);
+        }
+    };
+
+    // ===============================
+    // SAVE PROFILE DATA
+    // ===============================
+    const saveBtn = document.querySelector(".save-button");
+
+    saveBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        const profileData = {
+            firstName: document.getElementById("firstName").value.trim(),
+            lastName: document.getElementById("lastName").value.trim(),
+            email: document.getElementById("email").value.trim(),
+            phone: document.getElementById("phone").value.trim(),
+            profileImg: profileImg.src,
+            bannerImg: bannerImg.src
+        };
+
+        for (let key in profileData) {
+            if (!profileData[key]) {
+                alert("⚠️ Please fill all fields");
+                return;
+            }
+        }
+
+        localStorage.setItem("userProfile", JSON.stringify(profileData));
+
+        alert("✅ Profile saved successfully!");
+        window.location.href = "dashboard.html";
+
+    });
+    const savedProfile = JSON.parse(localStorage.getItem("userProfile"));
+
+if (savedProfile) {
+    document.getElementById("firstName").value = savedProfile.firstName;
+    document.getElementById("lastName").value = savedProfile.lastName;
+    document.getElementById("email").value = savedProfile.email;
+    document.getElementById("phone").value = savedProfile.phone;
+    profileImg.src = savedProfile.profileImg;
+    bannerImg.src = savedProfile.bannerImg;
+}
+
+</script>
+
+
+</body>
+</html>

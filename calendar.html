@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Calendar</title>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background: #e6e6e6;
+    }
+
+    .page {
+        background: white;
+        margin: 20px;
+        padding: 30px;
+        min-height: 90vh;
+    }
+
+    /* BACK BUTTON */
+    .back-btn {
+        font-size: 26px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        margin-bottom: 20px;
+        margin-left: 100px;
+    }
+
+    .layout {
+        display: flex;
+        gap: 60px;
+        align-items: flex-start;
+    }
+
+    /* CALENDAR PANEL */
+    .calendar {
+        background: #dcd9ee;
+        width: 420px;
+        height:400px;
+        padding: 25px;
+        border-radius: 14px;
+        margin-left:200px;
+
+    }
+
+    .calendar-header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 30px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .calendar-header button {
+        background: none;
+        border: none;
+        font-size: 22px;
+        cursor: pointer;
+    }
+
+    .weekdays {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        text-align: center;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .days {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 14px;
+    }
+
+    .day {
+        background: white;
+        padding: 10px;
+        text-align: center;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 15px;
+    }
+
+    .day.active {
+        outline: 2px solid #4b50ff;
+    }
+
+    /* RIGHT PANEL */
+    .details {
+        margin-top:100px;
+        width: 420px;
+        border: 2px solid black;
+        border-radius: 14px;
+        overflow: hidden;
+    }
+
+    .details-header {
+        background: #dcd9ee;
+        padding: 12px;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .details-body {
+        padding: 15px;
+        font-size: 14px;
+    }
+
+    .row {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .row:last-child {
+        border-bottom: none;
+    }
+
+    .section-title {
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+        margin: 10px 0 5px;
+        color: #444;
+    }
+
+    .expense {
+        color: #000;
+    }
+
+    .income {
+        color: #000;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <button onclick="history.back()" class="back-btn" >&#x276E;</button>
+
+    <div class="layout">
+
+        <!-- CALENDAR -->
+        <div class="calendar">
+            <div class="calendar-header">
+                <button id="prev">&#x276E;</button>
+                <span id="monthLabel">December</span>
+                <button id="next">&#x276F;</button>
+            </div>
+
+            <div class="weekdays">
+                <div>Mon</div><div>Tue</div><div>Wed</div>
+                <div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
+            </div>
+
+            <div class="days" id="days"></div>
+        </div>
+
+        <!-- DETAILS -->
+        <div class="details">
+            <div class="details-header" id="detailsHeader">
+                December
+            </div>
+            <div class="details-body" id="detailsBody">
+                Select a date
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+/* -------------------- STATE -------------------- */
+let currentDate = new Date();
+let selectedDay = null;
+
+const monthLabel = document.getElementById("monthLabel");
+const daysContainer = document.getElementById("days");
+const detailsHeader = document.getElementById("detailsHeader");
+const detailsBody = document.getElementById("detailsBody");
+
+document.getElementById("prev").addEventListener("click", () => changeMonth(-1));
+document.getElementById("next").addEventListener("click", () => changeMonth(1));
+
+/* -------------------- CALENDAR -------------------- */
+function renderCalendar() {
+    daysContainer.innerHTML = "";
+
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+
+    monthLabel.textContent =
+        currentDate.toLocaleString("default", { month: "long" }) + " " + year;
+
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+
+    // Convert Sunday(0) → 6 so Monday starts first
+    let startDay = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1;
+
+    // Empty cells
+    for (let i = 0; i < startDay; i++) {
+        const empty = document.createElement("div");
+        daysContainer.appendChild(empty);
+    }
+
+    // Days
+    for (let day = 1; day <= lastDay.getDate(); day++) {
+        const dayEl = document.createElement("div");
+        dayEl.className = "day";
+        dayEl.textContent = day;
+
+        dayEl.addEventListener("click", () => selectDate(day, dayEl));
+        daysContainer.appendChild(dayEl);
+    }
+}
+
+function changeMonth(direction) {
+    currentDate.setMonth(currentDate.getMonth() + direction);
+    selectedDay = null;
+    detailsBody.innerHTML = "Select a date";
+    renderCalendar();
+}
+
+/* -------------------- DATE SELECTION -------------------- */
+function selectDate(day, element) {
+    document.querySelectorAll(".day").forEach(d => d.classList.remove("active"));
+    element.classList.add("active");
+
+    selectedDay = day;
+
+    const dateKey = getDateKey();
+    detailsHeader.textContent = dateKey;
+
+    const data = JSON.parse(localStorage.getItem(dateKey));
+    displayDetails(data);
+}
+
+function getDateKey() {
+    const y = currentDate.getFullYear();
+    const m = String(currentDate.getMonth() + 1).padStart(2, "0");
+    const d = String(selectedDay).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+}
+
+/* -------------------- STORAGE -------------------- */
+function saveData({ income = 0, expense = 0, goal = "", budget = 0 }) {
+    if (!selectedDay) {
+        alert("Select a date first");
+        return;
+    }
+
+    const dateKey = getDateKey();
+    const data = { income, expense, goal, budget };
+
+    localStorage.setItem(dateKey, JSON.stringify(data));
+    displayDetails(data);
+}
+
+/* -------------------- DISPLAY -------------------- */
+function displayDetails(data) {
+    if (!data) {
+        detailsBody.innerHTML = "No transactions happened";
+        return;
+    }
+
+    detailsBody.innerHTML = `
+        <div class="row"><span>Income</span><span>₹${data.income}</span></div>
+        <div class="row"><span>Expense</span><span>₹${data.expense}</span></div>
+        <div class="row"><span>Goal</span><span>${data.goal}</span></div>
+        <div class="row"><span>Budget Limit</span><span>₹${data.budget}</span></div>
+    `;
+}
+
+/* -------------------- INIT -------------------- */
+renderCalendar();
+
+/* -------------------- EXAMPLE USAGE --------------------
+   Call this function from your form submit button
+
+   saveData({
+       income: 5000,
+       expense: 2200,
+       goal: "Save for laptop",
+       budget: 3000
+   });
+-------------------------------------------------- */
+</script>
+
+</body>
+</html>

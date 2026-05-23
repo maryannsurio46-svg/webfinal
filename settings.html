@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+</head>
+<style>
+    .body {
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #F9F9FA;
+    }
+
+    .profile {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        margin-bottom: 1em;
+        margin-left: 45px;
+    }
+
+    .sidebar {
+        width: 250px;
+        background-color: #2A0764;
+        padding: 20px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+    }
+
+    .sidebar h2 {
+        margin-bottom: 30px;
+        color: white;
+        text-align: center;
+    }
+
+    .sidebar p {
+        color: white;
+        text-align: center;
+    }
+
+    .sidebar ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .sidebar li {
+        margin-bottom: 10px;
+    }
+
+    .sidebar a {
+        display: flex;
+        padding: 10px;
+        text-decoration: none;
+        color: white;
+        border-radius: 5px;
+        height: fit-content;
+    }
+
+    .sidebar a:hover {
+        color: #555;
+        background: #F5F5F5;
+    }
+
+    .sidebar i {
+        margin-right: 10px;
+    }
+
+    .dashboard-content {
+        margin-left: 300px;
+        padding: 0px;
+        font-size: 15px;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 5px;
+    }
+    .header h2 {
+        color: #333;
+    }
+
+    .header .user-info {
+        text-align: right;
+    }
+
+    .header i {
+        margin-right: 20px;
+        font-size: 20px;
+        color: #333;
+    }
+    .setting-content {
+        align-items: center;
+        margin-left: 320px;
+        margin-top: 20px;
+        padding: 15px;
+        font-size: 15px;
+        width: 880px;
+        background-color: white;;
+        outline:3px solid #1F054B;
+        border-radius: 20px;
+        line-height: 0.8;
+        height: 620px;
+        position: fixed;
+    }
+    .section {
+        text-decoration: none;
+        color: black;
+        margin-left: 20px;
+        font-size: large;
+        padding: 5px;
+        border-radius: 10px;
+    }
+    .section:hover {
+        background-color: lightgrey;
+        
+    }
+</style>
+<body>
+    <div class="sidebar">
+        <a href="profile PT.html" style="background-color: #2A0764;">
+            <img id="navProfileImg" src="c:\Users\acer\Downloads\e183fad7-9c43-49e0-b3d7-2d4770ad4dfb.jpg" class="profile" alt="profile">
+            <i style="margin-top: 125px;" class="fa-solid fa-pen-to-square"></i>
+        </a>
+        <h2 id="fullName">Patricia Bernales</h2>
+        <p id="userEmail">@bernales</p>
+        <ul>
+            <li><a href="dashboard.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+            <li><a href="report.html"><i class="fa-solid fa-chart-line"></i>Reports</a></li>
+            <li><a href="budgeting.html"><i class="fa-solid fa-wallet"></i>Budgeting</a></li>
+            <p>_____________________________</p>
+            <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
+            <li><a href="help.html"><i class="fa-solid fa-circle-question"></i>Help</a></li>
+            <li><a href="" id="delete-data"><i class="fa-solid fa-trash"></i>Delete all data</a></li>
+            <li><a href="homepage.html"><i class="fa-solid fa-right-from-bracket"></i>Log out</a></li>
+        </ul>
+    </div>
+    <div id="dashboard-content" class="dashboard-content">
+        <div class="header">
+            <h2 id="page-title">Settings</h2>
+            <div class="user-info">
+                <input type="text" id="search" placeholder="&#128269; Search here...">
+                <i class="fa-solid fa-bell"></i>
+                <a href="calendar.html">
+                    <i class="fa-solid fa-calendar"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="setting-content">
+        <div class="setting-section">
+            <a class="section" href="settings.html">Terms of use</a>
+            <a class="section" href="privacy.html"> Privacy Policy</a>
+            <a class="section" href="about.html">About Us</a>
+            <a class="section" href="reminder.html">Reminder</a>
+            <br><br><hr>
+        </div>
+        <p id="Terms" style="line-height: 1; font-size: medium;
+        overflow-y: scroll; height: 575px;">
+        By downloading or using the app, these terms will automatically apply to you – you should make sure therefore that you read them carefully before using the app. You’re not allowed to copy or modify the app, any part of the app, or our trademarks in any way. You’re not allowed to attempt to extract the source code of the app, and you also shouldn’t try to translate the app into other languages or make derivative versions. The app itself, and all the trademarks, copyright, database rights, and other intellectual property rights related to it, still belong to Horoscope365.  Horoscope365 is committed to ensuring that the app is as useful and efficient as possible. For that reason, we reserve the right to make changes to the app or to charge for its services, at any time and for any reason. We will never charge you for the app or its services without making it very clear to you exactly what you’re paying for.  The Money Tracker app stores and processes personal data that you have provided to us, to provide my Service.<br><br>
+         It’s your responsibility to keep your phone and access to the app secure. We therefore recommend that you do not jailbreak or root your phone, which is the process of removing software restrictions and limitations imposed by the official operating system of your device. It could make your phone vulnerable to malware/viruses/malicious programs, compromise your phone’s security features and it could mean that the Money Tracker app won’t work properly or at all.  The app does use third-party services that declare their Terms and Conditions.  Link to Terms and Conditions of third-party service providers used by the app  Google Play Services AdMob Google Analytics for Firebase Firebase Crashlytics Facebook Adjust You should be aware that there are certain things that Horoscope365 will not take responsibility for. Certain functions of the app will require the app to have an active internet connection. The connection can be Wi-Fi or provided by your mobile network provider, but Horoscope365 cannot take responsibility for the app not working at full functionality if you don’t have access to Wi-Fi, and you don’t have any of your data allowance left.  If you’re using the app outside of an area with Wi-Fi, you should remember that the terms of the agreement with your mobile network provider will still apply.<br><br>
+          As a result, you may be charged by your mobile provider for the cost of data for the duration of the connection while accessing the app, or other third-party charges. In using the app, you’re accepting responsibility for any such charges, including roaming data charges if you use the app outside of your home territory (i.e. region or country) without turning off data roaming. If you are not the bill payer for the device on which you’re using the app, please be aware that we assume that you have received permission from the bill payer for using the app.  Along the same lines, Horoscope365 cannot always take responsibility for the way you use the app i.e. You need to make sure that your device stays charged – if it runs out of battery and you can’t turn it on to avail the Service, Horoscope365 cannot accept responsibility.  With respect to Horoscope365’s responsibility for your use of the app, when you’re using the app, it’s important to bear in mind that although we endeavor to ensure that it is updated and correct at all times, we do rely on third parties to provide information to us so that we can make it available to you. Horoscope365 accepts no liability for any loss, direct or indirect, you experience as a result of relying wholly on this functionality of the app.  At some point, we may wish to update the app.<br><br>
+           The app is currently available on Android & iOS – the requirements for the both systems(and for any additional systems we decide to extend the availability of the app to) may change, and you’ll need to download the updates if you want to keep using the app. Horoscope365 does not promise that it will always update the app so that it is relevant to you and/or works with the Android & iOS version that you have installed on your device. However, you promise to always accept updates to the application when offered to you, We may also wish to stop providing the app, and may terminate use of it at any time without giving notice of termination to you. Unless we tell you otherwise, upon any termination, (a) the rights and licenses granted to you in these terms will end; (b) you must stop using the app, and (if needed) delete it from your device.  Changes to This Terms and Conditions  I may update our Terms and Conditions from time to time. Thus, you are advised to review this page periodically for any changes. I will notify you of any changes by posting the new Terms and Conditions on this page.  These terms and conditions are effective as of 2023-03-09  Contact Us  If you have any questions or suggestions about my Terms and Conditions, do not hesitate to contact me at freemanzk@163.com.
+        </p>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+    const userProfile = JSON.parse(localStorage.getItem("userProfile"));
+
+    if (!userProfile) return;
+
+    const fullName = `${userProfile.firstName} ${userProfile.lastName}`;
+
+    // Update full name
+    const nameEl = document.getElementById("fullName");
+    if (nameEl) nameEl.textContent = fullName;
+
+    // Update email
+    const emailEl = document.getElementById("userEmail");
+    if (emailEl) emailEl.textContent = userProfile.email;
+
+    // Update profile image
+    const imgEl = document.getElementById("navProfileImg");
+    if (imgEl) imgEl.src = userProfile.profileImg;
+});
+        document.getElementById("search").addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+        const query = this.value.toLowerCase().trim();
+
+        // Keyword-to-page mapping
+        const pages = {
+            "dashboard": "dashboard.html",
+            "home": "dashboard.html",
+
+            "report": "report.html",
+            "reports": "report.html",
+
+            "budget": "budgeting.html",
+            "budgeting": "budgeting.html",
+
+            "setting": "settings.html",
+            "settings": "settings.html",
+
+            "help": "help.html",
+            "support": "help.html",
+
+            "calendar": "calendar.html",
+            "date": "calendar.html",
+
+            "reminder": "reminder.html",
+            "reminders": "reminder.html",
+
+            "help": "help.html",
+            "documentation": "help.html",
+
+            "privacy": "reminder.html",
+            "policy": "reminder.html",
+
+            "enpense": "budgeting.html",
+            "income": "budgeting.html",
+            "goal": "budgeting.html",
+            "limit": "budgeting.html",
+
+            "terms": "settings.html",
+            "use": "settings.html",
+            "term": "settings.html",
+            "conditions": "settings.html",
+
+            "logout": "homepage.html",
+            "log out": "homepage.html"
+        };
+
+        // Find matching page
+        for (let keyword in pages) {
+            if (query.includes(keyword)) {
+                window.location.href = pages[keyword];
+                return;
+            }
+        }
+
+        // If no match found
+        alert("No page found related to: " + query);
+    }
+});
+    </script>
+</html>

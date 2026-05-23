@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Money Tracker</title>
+
+<style>
+body {
+    font-family: 'Times New Roman', Times, serif;
+    margin: 0;
+    padding: 0;
+    background-image: url(/.blog_card_Financial-and-people-planning-work-together-to-maximize-organizational-growth_v230328.jpg);
+    background-color: #f4f4f4; /* Light background for overall readability */
+    color: white;
+}
+
+/* NAVBAR */
+.top-nav {
+    background-color: #9482fc;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 30px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Subtle shadow for depth */
+}
+
+.top-nav h2 {
+    margin: 0;
+}
+
+.nav-buttons a {
+    color: white;
+    text-decoration: none;
+    margin-left: 15px;
+    padding: 8px 12px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.nav-buttons a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* SECTIONS */
+.section {
+    min-height: 100vh;
+    padding: 120px 60px;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.8); /* Add a semi-transparent white background */
+    margin-bottom: 20px; /* Add spacing between sections */
+    border-radius: 10px; /* Rounded corners for sections */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1); /* Add a shadow to sections */
+}
+
+h2 {
+    font-size: 32px; /* Increased heading size */
+    margin-top: 20px;
+    color: white; /* Darker color for headings */
+    text-align: left; /* Center headings for better aesthetics */
+}
+
+p, li {
+    font-size: 18px; /* Adjusted font size */
+    line-height: 1.9; /* Improved line height for readability */
+    color: white; /* Slightly darker text */
+}
+
+/* HOME */
+#home {
+    background-image: url(blog_card_Financial-and-people-planning-work-together-to-maximize-organizational-growth_v230328.jpg);
+    background-size: cover;
+    background-position: center;
+    color: black; /* Ensure text is readable on the background */
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: left;
+}
+
+#home h2 {
+    font-size: 50px; /* Larger size for main title */
+    color: black;
+    margin-bottom: 20px;
+}
+
+#home p {
+    font-size: 24px;
+    color: black;
+}
+
+.main-container {
+    max-width: 800px;
+    padding: 20px;
+}
+
+.button {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 15px 30px;
+    border-radius: 50px;
+    background: #9482fc;
+    color: white;
+    text-decoration: none;
+    transition: 0.3s;
+    font-size: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3); 
+}
+
+.button:hover {
+    background: #7a64df; /* Darker shade on hover */
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3); /* Enhanced shadow on hover */
+}
+
+/* FLEX LAYOUT */
+.flex-section {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    margin-top: 30px;
+}
+
+.flex-text {
+    flex: 1;
+    margin-top: 10px;
+}
+
+.flex-image {
+    flex: 1;
+    text-align: center;
+}
+
+.flex-image img {
+    width: 100%;
+    max-width: 400px; /* Adjusted image size */
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2); /* Adjusted shadow */
+    transition: transform 0.3s ease-in-out; /* Add transition for smooth hover effect */
+}
+
+.flex-image img:hover {
+    transform: scale(1.05); /* Slightly scale up on hover */
+}
+
+/* FEATURES */
+.feature-list h3 {
+    margin-top: 20px;
+    color: black;
+    font-size: 24px;
+}
+
+ul {
+    padding-left: 30px;
+}
+
+/* ABOUT */
+.about {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.about img {
+    width: 300px; /* Adjusted width */
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2); /* Adjusted shadow */
+    transition: transform 0.3s ease-in-out; /* Add transition for smooth hover effect */
+}
+
+.about img:hover {
+    transform: scale(1.05); /* Slightly scale up on hover */
+}
+
+/* Make images blend with the background */
+#features .flex-image img,
+#services .flex-image img,
+#about .about img {
+    mix-blend-mode: multiply; /* This will make the white parts transparent */
+}
+
+/* SERVICES */
+#services ul {
+    list-style-type: disc; /* Use a more visible bullet */
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+    .flex-section,
+    .about {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .flex-image img,
+    .about img {
+        max-width: 80%; /* Allow images to take more width on smaller screens */
+    }
+}
+
+/* General Styling Adjustments */
+body {
+    background-image: url(blog_card_Financial-and-people-planning-work-together-to-maximize-organizational-growth_v230328.jpg);
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+/* Ensure sections have enough contrast */
+.section {
+    background-color: rgba(255, 255, 255, 0.9); /* More opaque background */
+    padding: 80px 30px; /* Adjust padding for smaller screens */
+}
+
+/* Improve typography */
+h2 {
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+p, li {
+    color: #555;
+}
+.top-nav {
+    background-color: #9482fc;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 30px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+.top-nav h2 {
+    margin: 0;
+}
+
+.nav-buttons a {
+    color: black;
+    text-decoration: none;
+    margin-right: 20px;
+    padding: 8px 12px;
+    border-radius: 5px;
+}
+
+.nav-buttons a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* SECTIONS */
+.section {
+    min-height: 100vh;
+    padding: 120px 60px;
+    box-sizing: border-box;
+}
+
+h2 {
+    font-size: 25px;
+    margin-top: 20px;
+    color: black;
+}
+
+p, li {
+    font-size: 20px;
+    line-height: 1.6;
+}
+
+/* HOME */
+.main-container h2 {
+    font-size: 20px;
+    margin-top: 90px;
+}
+
+.button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 25px;
+    border-radius: 50px;
+    background: white;
+    color: black;
+    text-decoration: none;
+    transition: 0.3s;
+}   
+
+.button:hover {
+    background: rgb(109, 108, 108);
+    color: white;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<header>
+<div class="top-nav">
+    <h2>Money Tracker</h2>
+    <div class="nav-buttons">
+        <a href="#home">Home</a>
+        <a href="#features">Features</a>
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+    </div>
+</div>
+</header>
+
+<!-- HOME -->
+<div id="home" class="section">
+    <div class="main-container">
+        <h2>Manage your <br>Expenses Easily with <br>Money Tracker</h2>
+        <p>Money Tracker is a digital tool that helps you track<br>
+           income, expenses, and financial goals.</p>
+        <a class="button" href="signup.html">Get Started</a>
+    </div>
+</div>
+
+<!-- FEATURES -->
+<div id="features" class="section">
+    <h2>Features</h2>
+    <div class="flex-section">
+        <!-- IMAGE LEFT -->
+        <div class="flex-image">
+            <img src="retailer-2-1024x754.png" alt="Features Image">
+        </div>
+
+        <!-- TEXT RIGHT -->
+        <div class="flex-text">
+            <div class="feature-list">
+                <h3>Smart Notifications</h3>
+                <ul>
+                    <li>Trackable alerts for missed expenses</li>
+                    <li>Payment reminders</li>
+                    <li>Savings suggestions</li>
+                    <li>Inspirational messages</li>
+                </ul>
+            </div>
+
+            <div class="feature-list">
+                <h3>Premium Features</h3>
+                <ul>
+                    <li>Customizable spending data</li>
+                    <li>Direct mode tracking</li>
+                    <li>Watch app integration</li>
+                    <li>Custom tips</li>
+                </ul>
+            </div>
+
+            <div class="feature-list">
+                <h3>Financial Buddies</h3>
+                <ul>
+                    <li>Personalized spending advice</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SERVICES -->
+<div id="services" class="section">
+    <h2>Services</h2>
+
+    <div class="flex-section">
+        <!-- TEXT LEFT -->
+        <div class="flex-text">
+            <ul>
+                <li>Expense Categorization: Automatic sorting with student-specific categories</li>
+                <li>Tips and recommendation: To offer practical and culturally relevant financial tips</li>
+                <li>Weekly and monthly views: Flexibility to match your planning style</li>
+                <li>Alerts: Get notified before you overdraft, you succeed your goals, and notify once you forgot to expense for today</li>
+            </ul>
+        </div>
+
+        <!-- IMAGE RIGHT -->
+        <div class="flex-image">
+            <img src="mohamed-nohassi-HI04JoIfjjc-unsplash.jpg" alt="Services Image">
+        </div>
+    </div>
+</div>
+
+<!-- ABOUT -->
+<div id="about" class="section">
+    <h2>About Us</h2>
+    <div class="about">
+        <img src="MintRD8D4J.png" alt="About Image">
+    
+        <div class="about-text">
+        <p>
+            <b>Our Story</b><br>
+            Money Tracker was born in a college dorm when Patricia and Mary Ann realised how difficult it was
+            to manage finances as a student. Between transportation, books, rent, food, and occasional social 
+            activities, money seemed to disappear faster than lecture notes before finals. 
+        </p>
+        <p>
+             We noticed that existing budgeting tools weren't designed with student life in mind.
+            They were too complex, didn't account for irregular income from part-time jobs or occasional parental support, 
+            and didn't speak our language. 
+            That's why we created Money Tracker-by students, for students.
+        </p>
+        <p>
+            <b>Our Mission</b><br>
+            To empower students with simple, intuitive tools to take control of our finances, reduce money-related stress, and build
+            healthy financial habits that last beyond graduation.
+        </p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

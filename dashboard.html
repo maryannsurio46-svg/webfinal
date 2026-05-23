@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<style>
+    .body {
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #F9F9FA;
+
+    }
+
+    .profile {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        margin-bottom: 1em;
+        margin-left: 45px;
+    }
+
+    .sidebar {
+        width: 250px;
+        background-color: #2A0764;
+        padding: 20px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+    }
+
+    .sidebar h2 {
+        margin-bottom: 30px;
+        color: white;
+        text-align: center;
+    }
+
+    .sidebar p {
+        color: white;
+        text-align: center;
+    }
+
+    .sidebar ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .sidebar li {
+        margin-bottom: 10px;
+    }
+
+    .sidebar a {
+        display: flex;
+        padding: 10px;
+        text-decoration: none;
+        color: white;
+        border-radius: 5px;
+        height: fit-content;
+    }
+
+    .sidebar a:hover {
+        color: #555;
+        background: #F5F5F5;
+    }
+
+    .sidebar i {
+        margin-right: 10px;
+    }
+
+    .dashboard-content {
+        margin-left: 300px;
+        padding: 0px;
+        font-size: 15px;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 5px;
+    }
+
+    .header h2 {
+        color: #333;
+    }
+
+    .header .user-info {
+        text-align: left;
+    }
+
+    .header i {
+        margin-right: 10px;
+        font-size: 20px;
+        color: #333;
+    }
+
+    .transaction-history-section {
+        align-items: center;
+        margin-left: 320px;
+        margin-top: 20px;
+        padding: 15px;
+        font-size: 15px;
+        width: 880px;
+        background-color: #F9F9FA;
+        outline:3px solid #1F054B;
+        border-radius: 20px;
+        line-height: 0.9;
+        height: 620px;
+        position: fixed;
+    }
+
+    .section .income {
+        background: #8CECA7;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 5px;
+    }
+
+    .section .expense {
+        background: #EF5769 27%;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 5px;
+    }
+
+    .section .saving {
+        background: #9E97D6;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 5px;
+    }
+
+    .section .budget {
+        background: #F7F7F7;
+        border-radius: 5px;
+        padding: 30px;
+        margin-bottom: 5px;
+        text-align: center;
+    }
+
+    .section .goal {
+        background: #F7F7F7;
+        border-radius: 5px;
+        padding: 30px;
+        margin-bottom: 5px;
+        text-align: center;
+    }
+    /* Style for tables */
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    .data-table th,
+    .data-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    .data-table th {
+        background-color: #f2f2f2;
+    }
+</style>
+
+<body>
+    <div class="sidebar">
+        <a href="profile PT.html" style="background-color: #2A0764;">
+            <img id="navProfileImg" src="c:\Users\acer\Downloads\e183fad7-9c43-49e0-b3d7-2d4770ad4dfb.jpg" class="profile" alt="profile">
+            <i style="margin-top: 125px;" class="fa-solid fa-pen-to-square"></i>
+        </a>
+
+        <h2 id="fullName">Patricia Bernales</h2>
+        <p id="userEmail">@bernales</p>
+        <ul>
+            <li><a href="dashboard.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+            <li><a href="report.html"><i class="fa-solid fa-chart-line"></i>Reports</a></li>
+            <li><a href="budgeting.html"><i class="fa-solid fa-wallet"></i>Budgeting</a></li>
+            <p>_____________________________</p>
+            <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
+            <li><a href="help.html"><i class="fa-solid fa-circle-question"></i>Help</a></li>
+            <li><a href="" id="delete-data"><i class="fa-solid fa-trash"></i>Delete all data</a></li>
+            <li><a href="homepage.html"><i class="fa-solid fa-right-from-bracket"></i>Log out</a></li>
+        </ul>
+    </div>
+    <div id="dashboard-content" class="dashboard-content">
+        <div class="header">
+            <h2 id="page-title">Dashboard</h2>
+            <div class="user-info">
+                <input type="text" id="search" placeholder="&#128269; Search here...">
+                <i class="fa-solid fa-bell"></i>
+                <a href="calendar.html">
+                    <i class="fa-solid fa-calendar"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="transaction-history-section">
+            <h2>Financial Snapshot: November 2025</h2>
+            <div class="section">
+                <div class="income">Total Income <br> 0.00 </div>
+            </div>
+            <div class="section">
+                <div class="expense">Total Expense <br> 0.00 </div>
+            </div>
+            <div class="section">
+                <div class="saving">Total Savings <br> 0.00 </div>
+            </div>
+            <h2>
+                <br>Budget Progress
+            </h2>
+            <div class="section">
+                <div class="budget">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Budget Limit</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td id="budget-category"></td>
+                                <td id="budget-amount"></td>
+                                <td id="budget-status"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <h2>
+                <br>Savings Goal
+            </h2>
+            <div class="section">
+                <div class="goal">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Goal Name</th>
+                                <th>Amount</th>
+                                <th>Saved</th>
+                                <th>Remaining</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td id="goal-name"></td>
+                                <td id="goal-amount"></td>
+                                <td id="goal-saved"></td>
+                                <td id="goal-remaining"></td>
+                                <td id="goal-actions">
+                                    <button id="add-money">Add Money</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+document.addEventListener("DOMContentLoaded", () => {
+    const userProfile = JSON.parse(localStorage.getItem("userProfile"));
+
+    if (!userProfile) return;
+
+    const fullName = `${userProfile.firstName} ${userProfile.lastName}`;
+
+    // Update full name
+    const nameEl = document.getElementById("fullName");
+    if (nameEl) nameEl.textContent = fullName;
+
+    // Update email
+    const emailEl = document.getElementById("userEmail");
+    if (emailEl) emailEl.textContent = userProfile.email;
+
+    // Update profile image
+    const imgEl = document.getElementById("navProfileImg");
+    if (imgEl) imgEl.src = userProfile.profileImg;
+});
+
+        document.getElementById("search").addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+        const query = this.value.toLowerCase().trim();
+
+        // Keyword-to-page mapping
+        const pages = {
+            "dashboard": "dashboard.html",
+            "home": "dashboard.html",
+
+            "report": "report.html",
+            "reports": "report.html",
+
+            "budget": "budgeting.html",
+            "budgeting": "budgeting.html",
+
+            "setting": "settings.html",
+            "settings": "settings.html",
+
+            "help": "help.html",
+            "support": "help.html",
+
+            "calendar": "calendar.html",
+            "date": "calendar.html",
+
+            "reminder": "reminder.html",
+            "reminders": "reminder.html",
+
+            "help": "help.html",
+            "documentation": "help.html",
+
+            "privacy": "reminder.html",
+            "policy": "reminder.html",
+
+            "enpense": "budgeting.html",
+            "income": "budgeting.html",
+            "goal": "budgeting.html",
+            "limit": "budgeting.html",
+
+            "terms": "settings.html",
+            "use": "settings.html",
+            "term": "settings.html",
+            "conditions": "settings.html",
+
+            "logout": "homepage.html",
+            "log out": "homepage.html"
+        };
+
+        // Find matching page
+        for (let keyword in pages) {
+            if (query.includes(keyword)) {
+                window.location.href = pages[keyword];
+                return;
+            }
+        }
+
+        // If no match found
+        alert("No page found related to: " + query);
+    }
+});
+        document.getElementById('delete-data').addEventListener('click', function() {
+            if (confirm('Are you sure you want to delete all data?')) {
+                localStorage.clear();
+                alert('Data deleted successfuly!');
+                location.reload();
+            }
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to retrieve data from local storage
+            function getData(key) {
+                return localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)) : null;
+            }
+            // Function to format numbers as currency
+            function formatCurrency(amount) {
+                return '' + parseFloat(amount).toFixed(2);
+            }
+            // Function to display a savings goal
+            function displaySavingsGoal(savingsGoal, savingsGoalEl) {
+                const goalNameEl = document.getElementById('goal-name');
+                const goalAmountEl = document.getElementById('goal-amount');
+                const goalSavedEl = document.getElementById('goal-saved');
+                const goalRemainingEl = document.getElementById('goal-remaining');
+                const goalActionsEl = document.getElementById('goal-actions');
+                if (savingsGoal) {
+                    goalNameEl.textContent = savingsGoal.name;
+                    goalAmountEl.textContent = formatCurrency(savingsGoal.amount);
+                    goalSavedEl.textContent = formatCurrency(savingsGoal.saved);
+                    const remainingAmount = savingsGoal.amount - savingsGoal.saved;
+                    goalRemainingEl.textContent = formatCurrency(remainingAmount);
+                    //Display Complete Message or the button
+                    if (remainingAmount <= 0) {
+                        goalActionsEl.textContent = 'Complete!';
+                    } else {
+                        goalActionsEl.innerHTML = '<button id="add-money">Add Money</button>';
+                        const addMoneyBtn = document.getElementById('add-money');
+                        if (!addMoneyBtn.dataset.listener) {
+                            addMoneyBtn.addEventListener('click', function() {
+                                const addAmount = parseFloat(prompt('Enter amount to add to savings (Remaining: ' + formatCurrency(remainingAmount) + '):'));
+                                if (!isNaN(addAmount) && addAmount > 0) {
+                                    savingsGoal.saved = parseFloat(savingsGoal.saved) + addAmount;
+                                    if (savingsGoal.saved >= savingsGoal.amount) {
+                                        savingsGoal.saved = savingsGoal.amount; // Limit saved amount to the goal
+                                        alert('Congratulations! You have reached your savings goal.');
+                                    }
+                                    localStorage.setItem('savingsGoal', JSON.stringify(savingsGoal));
+                                    displaySavingsGoal(savingsGoal, savingsGoalEl); // Update display
+                                } else {
+                                    alert('Invalid amount.');
+                                }
+                            });
+                            addMoneyBtn.dataset.listener = true; // set the data so the event is not set again
+                        }
+                    }
+                } else {
+                    goalNameEl.textContent = 'No goals set. Go to Budgeting tab to set up goals.';
+                    goalAmountEl.textContent = '';
+                    goalSavedEl.textContent = '';
+                    goalRemainingEl.textContent = '';
+                    goalActionsEl.textContent = '';
+                }
+            }
+            // Function to display budget progress
+            function displayBudgetProgress(budgetLimit, budgetProgressEl) {
+                const budgetCategoryEl = document.getElementById('budget-category');
+                const budgetAmountEl = document.getElementById('budget-amount');
+                const budgetStatusEl = document.getElementById('budget-status');
+                if (budgetLimit) {
+                    budgetCategoryEl.textContent = budgetLimit.category;
+                    budgetAmountEl.textContent = formatCurrency(budgetLimit.amount);
+                    // Check if budget limit is met (example logic, adjust as needed)
+                    let totalExpense = getData('totalExpense') || 0;
+                    if (totalExpense == budgetLimit.amount) {
+                        budgetStatusEl.textContent = 'Budget Limit Met!';
+                    } else if (totalExpense > budgetLimit.amount) {
+                        budgetStatusEl.textContent = 'Budget Limit Not Met!';
+                    } else {
+                        budgetStatusEl.textContent = 'You need to meet your budget limit!';
+                    }
+                } else {
+                    budgetCategoryEl.textContent = 'No budgets set. Go to Budgeting tab to set up.';
+                    budgetAmountEl.textContent = '';
+                    budgetStatusEl.textContent = '';
+                }
+            }
+            // Get elements to update
+            const totalIncomeEl = document.querySelector('.income');
+            const totalExpenseEl = document.querySelector('.expense');
+            const totalSavingsEl = document.querySelector('.saving');
+            const budgetProgressEl = document.querySelector('.budget');
+            const savingsGoalEl = document.querySelector('.goal');
+            // Load and display data
+            let totalIncome = getData('totalIncome') || 0;
+            let totalExpense = getData('totalExpense') || 0;
+            let savingsGoal = getData('savingsGoal') || null;
+            let budgetLimit = getData('budgetLimit') || null;
+            // Calculate total savings
+            let totalSavings = totalIncome - totalExpense;
+            localStorage.setItem('totalSavings', totalSavings);
+            // Update dashboard elements
+            totalIncomeEl.innerHTML = 'Total Income <br>' + formatCurrency(totalIncome);
+            totalExpenseEl.innerHTML = 'Total Expense <br>' + formatCurrency(totalExpense);
+            totalSavingsEl.innerHTML = 'Total Savings <br>' + formatCurrency(totalSavings);
+            // Display savings goal
+            displaySavingsGoal(savingsGoal, savingsGoalEl);
+            // Display budget progress
+            displayBudgetProgress(budgetLimit, budgetProgressEl);
+        });
+        
+    </script>
+</body>
+</html>
