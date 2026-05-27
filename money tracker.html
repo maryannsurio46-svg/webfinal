@@ -255,77 +255,60 @@
     </div>
 </div>
 <script>
-    const authForm = document.getElementById('authForm');
-    const messageDiv = document.getElementById('message');
+const authForm = document.getElementById('authForm');
+const messageDiv = document.getElementById('message');
 
-    authForm.addEventListener('submit', function(e) {
+authForm.addEventListener('submit', function (e) {
+    e.preventDefault();
 
-        e.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
 
-        const email =
-            document.getElementById('email').value;
+    // GET STORED DATA
+    const storedFullname = localStorage.getItem('fullname');
+    const storedEmail = localStorage.getItem('email');
+    const storedPassword = localStorage.getItem('password');
 
-        const password =
-            document.getElementById('password').value;
+    // LOGIN LOGIC
+    if (email === storedEmail && password === storedPassword) {
 
-        // LOGIN LOGIC
-        const storedEmail =
-            localStorage.getItem('email');
+        // Build user profile
+        const userProfile = {
+            firstName: storedFullname ? storedFullname.split(" ")[0] : "",
+            lastName: storedFullname ? storedFullname.split(" ")[1] : "",
+            fullName: storedFullname,
+            email: storedEmail
+        };
 
-        const storedPassword =
-            localStorage.getItem('password');
+        // SAVE for dashboard
+        localStorage.setItem("userProfile", JSON.stringify(userProfile));
 
-        if (
-            email === storedEmail &&
-            password === storedPassword
-        ) {
-
-            showMessage(
-                'Logged in successfully! Redirecting to Dashboard...',
-                'success'
-            );
-
-            setTimeout(() => {
-
-                window.location.href =
-                    'dashboard.html';
-
-            }, 1500);
-
-        } else {
-
-            showMessage(
-                'Invalid credentials',
-                'error'
-            );
-        }
-    });
-
-    // ======================================
-    // SHOW MESSAGE
-    // ======================================
-    function showMessage(text, type) {
-
-        messageDiv.textContent = text;
-
-        messageDiv.className =
-            'message ' + type;
-
-        messageDiv.style.display = 'block';
-
-        // CENTER THE MESSAGE
-        messageDiv.style.textAlign = 'center';
-
-        messageDiv.style.margin = '20px auto';
-
-        messageDiv.style.width = '80%';
+        showMessage('Logged in successfully! Redirecting to Dashboard...', 'success');
 
         setTimeout(() => {
+            window.location.href = 'dashboard.html';
+        }, 1500);
 
-            messageDiv.style.display = 'none';
-
-        }, 5000);
+    } else {
+        showMessage('Invalid credentials', 'error');
     }
+}); // ✅ THIS WAS MISSING (CRITICAL FIX)
+
+// ======================================
+// SHOW MESSAGE
+// ======================================
+function showMessage(text, type) {
+    messageDiv.textContent = text;
+    messageDiv.className = 'message ' + type;
+    messageDiv.style.display = 'block';
+    messageDiv.style.textAlign = 'center';
+    messageDiv.style.margin = '20px auto';
+    messageDiv.style.width = '80%';
+
+    setTimeout(() => {
+        messageDiv.style.display = 'none';
+    }, 5000);
+}
 </script>
 </body>
 </html>

@@ -339,6 +339,7 @@
 </body>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+    cleanupGoals(); // ✅ ADD THIS FIRST LINE INSIDE DOMContentLoaded
 
     // =========================================
     // USER PROFILE
@@ -439,26 +440,93 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // =========================================
-    // DELETE DATA
-    // =========================================
-    const deleteBtn = document.getElementById("delete-data");
+   document.getElementById("delete-data").addEventListener("click", function (e) {
+    e.preventDefault();
+    openDeleteModal();
+});
 
-    if (deleteBtn) {
+function openDeleteModal() {
+    const modal = document.createElement("div");
 
-        deleteBtn.addEventListener("click", function () {
+    modal.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        z-index: 9999;
+        width: 300px;
+        font-family: Arial;
+    `;
 
-            if (confirm("Are you sure you want to delete all data?")) {
+    modal.innerHTML = `
+        <h3>Delete Data</h3>
 
-                localStorage.clear();
+        <label><input type="checkbox" id="del-transactions"> Transactions</label><br>
+        <label><input type="checkbox" id="del-goals"> Savings Goals</label><br>
+        <label><input type="checkbox" id="del-budget"> Budget Limits</label><br><br>
 
-                alert("Data deleted successfully!");
+        <button id="confirm-delete" style="
+            background:red;
+            color:white;
+            padding:8px;
+            border:none;
+            width:100%;
+            cursor:pointer;
+            border-radius:5px;
+        ">Delete Selected</button>
 
-                location.reload();
-            }
-        });
-    }
+        <button id="close-delete" style="
+            margin-top:10px;
+            width:100%;
+            padding:8px;
+        ">Cancel</button>
+    `;
 
+    document.body.appendChild(modal);
+
+    // CLOSE
+    modal.querySelector("#close-delete").addEventListener("click", () => {
+        document.body.removeChild(modal);
+    });
+
+    // CONFIRM DELETE
+    modal.querySelector("#confirm-delete").addEventListener("click", () => {
+
+        const delTransactions = document.getElementById("del-transactions").checked;
+        const delGoals = document.getElementById("del-goals").checked;
+        const delBudget = document.getElementById("del-budget").checked;
+
+        if (!delTransactions && !delGoals && !delBudget) {
+            alert("Please select at least one option.");
+            return;
+        }
+
+        if (delTransactions) {
+            localStorage.removeItem("transactions");
+            localStorage.removeItem("totalIncome");
+            localStorage.removeItem("totalExpense");
+        }
+
+        if (delGoals) {
+            localStorage.removeItem("allSavingsGoals");
+            localStorage.removeItem("financialGoalHistory");
+            localStorage.removeItem("savingsGoal");
+        }
+
+        if (delBudget) {
+            localStorage.removeItem("budgetCategories");
+            localStorage.removeItem("budgetLimit");
+            localStorage.removeItem("budgetProgress");
+        }
+
+        alert("Selected data deleted successfully!");
+        location.reload();
+    });
+}
     // =========================================
     // LOCAL STORAGE FUNCTIONS
     // =========================================
@@ -478,6 +546,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
         return "₱" + parseFloat(amount).toFixed(2);
     }
+    function cleanupGoals() {
+    let allGoals = getData("allSavingsGoals") || [];
+    let history = getData("financialGoalHistory") || [];
+
+    let active = [];
+
+    allGoals.forEach(goal => {
+
+        if (goal.saved >= goal.amount) {
+
+            history.push({
+                name: goal.name,
+                amount: goal.amount,
+                saved: goal.saved,
+                status: "Completed",
+                createdAt: new Date().toLocaleString()
+            });
+
+        } else {
+            active.push(goal);
+        }
+    });
+
+    saveData("allSavingsGoals", active);
+    saveData("financialGoalHistory", history);
+}
 
     // =========================================
     // SEPARATE CATEGORIES
@@ -686,19 +780,19 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             // SAVE TRANSACTIONS
-            let transactions =
-                getData("transactions") || [];
+let transactions =
+    getData("transactions") || [];
 
-            transactions.push({
+transactions.push({     
 
-                type: type,
-                category: category,
-                amount: amount,
-                date: new Date().toLocaleDateString(),
-                time: new Date().toLocaleTimeString()
-            });
-
-            saveData("transactions", transactions);
+    type: type.charAt(0).toUpperCase() + type.slice(1).toLowerCase(),
+    category: category,
+    amount: amount,
+    date: new Date().toLocaleDateString(),
+    time: new Date().toLocaleTimeString(),
+    createdAt: Date.now()
+});
+saveData("transactions", transactions);
 
             alert(type + " added successfully!");
 
@@ -736,65 +830,90 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     saveGoalBtn.addEventListener(
-        "click",
-        function () {
+    "click",
+    
+    function () {
 
-            const name = goalNameEl.value;
+        let allGoals =
+            getData("allSavingsGoals") || [];
 
-            const amount =
-                parseFloat(goalAmountEl.value);
+        const name = goalNameEl.value;
 
-            const saved =
-                parseFloat(goalSavedEl.value);
+        const amount =
+            parseFloat(goalAmountEl.value);
 
-            if (!name) {
+        const saved =
+            parseFloat(goalSavedEl.value);
 
-                alert("Please enter a goal name.");
+        if (!name) {
 
-                return;
-            }
+            alert("Please enter a goal name.");
 
-            if (isNaN(amount) || amount <= 0) {
-
-                alert("Please enter a valid goal amount.");
-
-                return;
-            }
-
-            if (
-                isNaN(saved) ||
-                saved < 0 ||
-                saved > amount
-            ) {
-
-                alert("Please enter a valid saved amount.");
-
-                return;
-            }
-
-            const savingsGoal = {
-
-                name: name,
-                amount: amount,
-                saved: saved
-            };
-
-            saveData("savingsGoal", savingsGoal);
-
-            storeFinancialGoalHistory(
-                savingsGoal
-            );
-
-            goalNameEl.value = "";
-
-            goalAmountEl.value = "";
-
-            goalSavedEl.value = "";
-
-            alert("Goal saved successfully!");
+            return;
         }
-    );
 
+        if (isNaN(amount) || amount <= 0) {
+
+            alert("Please enter a valid goal amount.");
+
+            return;
+        }
+
+        if (
+            isNaN(saved) ||
+            saved < 0 ||
+            saved > amount
+        ) {
+
+            alert("Please enter a valid saved amount.");
+
+            return;
+        }
+
+        const savingsGoal = {
+
+            id: Date.now(),
+
+            name: name,
+
+            amount: amount,
+
+            saved: saved,
+
+            entries: [],
+
+            status:
+                saved >= amount
+                ? "Completed"
+                : "In Progress"
+        };
+
+        // SAVE CURRENT GOAL
+        saveData(
+            "savingsGoal",
+            savingsGoal
+        );
+
+        // SAVE ALL GOALS
+        allGoals.push(savingsGoal);
+
+        saveData(
+            "allSavingsGoals",
+            allGoals
+        );
+
+        // SAVE HISTORY
+        storeFinancialGoalHistory(
+            savingsGoal
+        );
+
+        goalNameEl.value = "";
+        goalAmountEl.value = "";
+        goalSavedEl.value = "";
+
+        alert("Goal saved successfully!");
+    }
+);
     // =========================================
     // UPDATE BUDGET PROGRESS
     // =========================================
@@ -819,85 +938,212 @@ document.addEventListener("DOMContentLoaded", () => {
     // =========================================
     function storeFinancialGoalHistory(goal) {
 
-        let financialGoalHistory =
-            getData("financialGoalHistory") || [];
+    let financialGoalHistory =
+        getData("financialGoalHistory") || [];
 
-        financialGoalHistory.push(goal);
+    financialGoalHistory.push({
 
-        saveData(
-            "financialGoalHistory",
-            financialGoalHistory
-        );
-    }
+        name: goal.name,
 
+        amount: goal.amount,
+
+        saved: goal.saved,
+
+        status:
+            goal.saved >= goal.amount
+            ? "Completed"
+            : "In Progress",
+
+        createdAt:
+            new Date().toLocaleString()
+    });
+
+    saveData(
+        "financialGoalHistory",
+        financialGoalHistory
+    );
+}
     // =========================================
     // DISPLAY GOAL HISTORY
     // =========================================
     function displayFinancialGoalHistory() {
 
-        let financialGoalHistory =
-            getData("financialGoalHistory") || [];
+    let financialGoalHistory =
+        getData("financialGoalHistory") || [];
 
-        let historyDisplay =
-            "<h2>Financial Goal History</h2>";
+    const modal =
+        document.createElement("div");
 
-        if (
-            financialGoalHistory.length === 0
-        ) {
+    modal.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        z-index: 1000;
+        width: 500px;
+        max-height: 500px;
+        overflow-y: auto;
+        font-family: Arial;
+    `;
 
-            historyDisplay +=
-                "<p>No history available.</p>";
+    let historyHTML = `
+        <h2 style="
+            text-align:center;
+            color:#2A0764;
+            margin-bottom:20px;
+        ">
+            Financial Goal History
+        </h2>
+    `;
 
-        } else {
+    if (
+        financialGoalHistory.length === 0
+    ) {
 
-            financialGoalHistory.forEach(goal => {
-
-                historyDisplay += `
-                    <p>
-                        Goal: ${goal.name}<br>
-                        Amount: ${formatCurrency(goal.amount)}<br>
-                        Saved: ${formatCurrency(goal.saved)}
-                    </p>
-                `;
-            });
-        }
-
-        const modal =
-            document.createElement("div");
-
-        modal.innerHTML = historyDisplay;
-
-        modal.style.cssText = `
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 20px;
-            border: 1px solid #ccc;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            z-index: 1000;
-            max-width: 400px;
-            width: 90%;
+        historyHTML += `
+            <p style="
+                text-align:center;
+                color:gray;
+            ">
+                No financial goals yet.
+            </p>
         `;
 
-        const closeButton =
-            document.createElement("button");
+    } else {
 
-        closeButton.textContent = "Close";
+        financialGoalHistory.forEach((goal, index) => {
 
-        closeButton.addEventListener(
-            "click",
-            function () {
+            const statusColor =
+                goal.status === "Completed"
+                ? "green"
+                : "orange";
 
-                document.body.removeChild(modal);
-            }
-        );
+            const statusIcon =
+                goal.status === "Completed"
+                ? "✅"
+                : "⏳";
 
-        modal.appendChild(closeButton);
+            historyHTML += `
 
-        document.body.appendChild(modal);
+                <div style="
+    position:relative;
+    background:#F7F7F7;
+
+                    <div style="
+    font-size:12px;
+    color:gray;
+    margin-bottom:10px;
+">
+    ${goal.createdAt}
+</div>
+
+<button
+    class="delete-history-btn"
+    data-index="${index}"
+    style="
+        position:absolute;
+        right:15px;
+        bottom:15px;
+        width:40px;
+        height:40px;
+        border:none;
+        border-radius:50%;
+        background:#EF5769;
+        color:white;
+        cursor:pointer;
+        font-size:16px;
+        box-shadow:0 4px 10px rgba(0,0,0,0.2);
+    ">
+    <i class="fa-solid fa-trash"></i>
+</button>
+
+                    <div>
+                        🎯 Target:
+                        ${formatCurrency(goal.amount)}
+                    </div>
+
+                    <div>
+                        💰 Saved:
+                        ${formatCurrency(goal.saved)}
+                    </div>
+
+                    <div style="
+                        font-weight:bold;
+                        color:${statusColor};
+                    ">
+                        ${statusIcon}
+                        ${goal.status}
+                    </div>
+
+                    <div style="
+                        font-size:12px;
+                        color:gray;
+                    ">
+                        ${goal.createdAt}
+                    </div>
+
+                </div>
+            `;
+        });
     }
+
+    modal.innerHTML = historyHTML;
+
+    const closeButton =
+        document.createElement("button");
+
+    closeButton.textContent = "Close";
+
+    closeButton.style.cssText = `
+        width:100%;
+        padding:10px;
+        border:none;
+        border-radius:10px;
+        background:#3423B4;
+        color:white;
+        cursor:pointer;
+        margin-top:10px;
+    `;
+
+    closeButton.addEventListener(
+        "click",
+        function () {
+
+            document.body.removeChild(modal);
+        }
+    );
+modal.addEventListener("click", function (e) {
+
+    const deleteBtn =
+        e.target.closest(".delete-history-btn");
+
+    if (!deleteBtn) return;
+
+    const index =
+        deleteBtn.dataset.index;
+
+    let financialGoalHistory =
+        getData("financialGoalHistory") || [];
+
+    financialGoalHistory.splice(index, 1);
+
+    saveData(
+        "financialGoalHistory",
+        financialGoalHistory
+    );
+
+    modal.remove();
+
+    displayFinancialGoalHistory();
+});
+    modal.appendChild(closeButton);
+
+    document.body.appendChild(modal);
+}
 
 });
 </script>

@@ -239,10 +239,18 @@ function selectDate(day, element) {
     const dateKey = getDateKey();
     detailsHeader.textContent = dateKey;
 
-    const data = JSON.parse(localStorage.getItem(dateKey));
-    displayDetails(data);
-}
+    fetch(`http://localhost:8080/api/calendar/${dateKey}`)
+        .then(res => res.json())
+        .then(summary => {
 
+            fetch(`http://localhost:8080/api/calendar/transactions/${dateKey}`)
+                .then(res => res.json())
+                .then(transactions => {
+
+                    displayDetails(summary, transactions);
+                });
+        });
+}
 function getDateKey() {
     const y = currentDate.getFullYear();
     const m = String(currentDate.getMonth() + 1).padStart(2, "0");
@@ -265,18 +273,36 @@ function saveData({ income = 0, expense = 0, goal = "", budget = 0 }) {
 }
 
 /* -------------------- DISPLAY -------------------- */
-function displayDetails(data) {
-    if (!data) {
-        detailsBody.innerHTML = "No transactions happened";
+function displayDetails(summary, transactions = []) {
+
+    if (!summary) {
+        detailsBody.innerHTML = "No data found";
         return;
     }
 
-    detailsBody.innerHTML = `
-        <div class="row"><span>Income</span><span>₹${data.income}</span></div>
-        <div class="row"><span>Expense</span><span>₹${data.expense}</span></div>
-        <div class="row"><span>Goal</span><span>${data.goal}</span></div>
-        <div class="row"><span>Budget Limit</span><span>₹${data.budget}</span></div>
+    let html = `
+        <div class="row"><span>Income</span><span>₹${summary.income}</span></div>
+        <div class="row"><span>Expense</span><span>₹${summary.expense}</span></div>
+        <div class="row"><span>Goal</span><span>${summary.goal}</span></div>
+        <div class="row"><span>Budget</span><span>₹${summary.budget}</span></div>
+        <hr>
+        <h4>Transactions</h4>
     `;
+
+    if (transactions.length === 0) {
+        html += `<p>No transactions for this day</p>`;
+    } else {
+        transactions.forEach(t => {
+            html += `
+                <div class="row">
+                    <span>${t.category}</span>
+                    <span>₹${t.amount}</span>
+                </div>
+            `;
+        });
+    }
+
+    detailsBody.innerHTML = html;
 }
 
 /* -------------------- INIT -------------------- */

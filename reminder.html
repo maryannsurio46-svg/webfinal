@@ -497,6 +497,93 @@ function showNotifications() {
     notificationArea.style.display =
         notificationArea.style.display === 'none' ? 'block' : 'none';
 }
+document.getElementById("delete-data").addEventListener("click", function (e) {
+    e.preventDefault();
+    openDeleteModal();
+});
+
+function openDeleteModal() {
+    const modal = document.createElement("div");
+
+    modal.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        z-index: 9999;
+        width: 300px;
+        font-family: Arial;
+    `;
+
+    modal.innerHTML = `
+        <h3>Delete Data</h3>
+
+        <label><input type="checkbox" id="del-transactions"> Transactions</label><br>
+        <label><input type="checkbox" id="del-goals"> Savings Goals</label><br>
+        <label><input type="checkbox" id="del-budget"> Budget Limits</label><br><br>
+
+        <button id="confirm-delete" style="
+            background:red;
+            color:white;
+            padding:8px;
+            border:none;
+            width:100%;
+            cursor:pointer;
+            border-radius:5px;
+        ">Delete Selected</button>
+
+        <button id="close-delete" style="
+            margin-top:10px;
+            width:100%;
+            padding:8px;
+        ">Cancel</button>
+    `;
+
+    document.body.appendChild(modal);
+
+    // CLOSE
+    modal.querySelector("#close-delete").addEventListener("click", () => {
+        document.body.removeChild(modal);
+    });
+
+    // CONFIRM DELETE
+    modal.querySelector("#confirm-delete").addEventListener("click", () => {
+
+        const delTransactions = document.getElementById("del-transactions").checked;
+        const delGoals = document.getElementById("del-goals").checked;
+        const delBudget = document.getElementById("del-budget").checked;
+
+        if (!delTransactions && !delGoals && !delBudget) {
+            alert("Please select at least one option.");
+            return;
+        }
+
+        if (delTransactions) {
+            localStorage.removeItem("transactions");
+            localStorage.removeItem("totalIncome");
+            localStorage.removeItem("totalExpense");
+        }
+
+        if (delGoals) {
+            localStorage.removeItem("allSavingsGoals");
+            localStorage.removeItem("financialGoalHistory");
+            localStorage.removeItem("savingsGoal");
+        }
+
+        if (delBudget) {
+            localStorage.removeItem("budgetCategories");
+            localStorage.removeItem("budgetLimit");
+            localStorage.removeItem("budgetProgress");
+        }
+
+        alert("Selected data deleted successfully!");
+        location.reload();
+    });
+}
 </script>
 
  </body>

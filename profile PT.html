@@ -233,7 +233,7 @@
 
         <div>
             <label>Confirm Password</label>
-            <input type="confirm-password" placeholder="Type here">
+            <input type="password" placeholder="Type here">
         </div>
 
         <div>
@@ -258,20 +258,36 @@
 
     cancelBtn.addEventListener("click", () => {
         cancelBtn.classList.add("clicked");
-        setTimeout(() => cancelBtn.classList.remove("clicked"), 350);
+
+        setTimeout(() => {
+            cancelBtn.classList.remove("clicked");
+        }, 350);
     });
 
     // ===============================
     // PROFILE IMAGE UPLOAD
     // ===============================
-    const profileUpload = document.getElementById("profile-upload");
-    const profileImg = document.getElementById("profile-img");
+    const profileUpload =
+        document.getElementById("profile-upload");
+
+    const profileImg =
+        document.getElementById("profile-img");
 
     profileUpload.onchange = () => {
-        const file = profileUpload.files[0];
+
+        const file =
+            profileUpload.files[0];
+
         if (file) {
-            const reader = new FileReader();
-            reader.onload = e => (profileImg.src = e.target.result);
+
+            const reader =
+                new FileReader();
+
+            reader.onload = e => {
+                profileImg.src =
+                    e.target.result;
+            };
+
             reader.readAsDataURL(file);
         }
     };
@@ -279,14 +295,27 @@
     // ===============================
     // BANNER IMAGE UPLOAD
     // ===============================
-    const bannerUpload = document.getElementById("banner-upload");
-    const bannerImg = document.getElementById("banner-img");
+    const bannerUpload =
+        document.getElementById("banner-upload");
+
+    const bannerImg =
+        document.getElementById("banner-img");
 
     bannerUpload.onchange = () => {
-        const file = bannerUpload.files[0];
+
+        const file =
+            bannerUpload.files[0];
+
         if (file) {
-            const reader = new FileReader();
-            reader.onload = e => (bannerImg.src = e.target.result);
+
+            const reader =
+                new FileReader();
+
+            reader.onload = e => {
+                bannerImg.src =
+                    e.target.result;
+            };
+
             reader.readAsDataURL(file);
         }
     };
@@ -294,46 +323,145 @@
     // ===============================
     // SAVE PROFILE DATA
     // ===============================
-    const saveBtn = document.querySelector(".save-button");
+    const saveBtn =
+        document.querySelector(".save-button");
 
     saveBtn.addEventListener("click", (e) => {
+
         e.preventDefault();
 
         const profileData = {
-            firstName: document.getElementById("firstName").value.trim(),
-            lastName: document.getElementById("lastName").value.trim(),
-            email: document.getElementById("email").value.trim(),
-            phone: document.getElementById("phone").value.trim(),
-            profileImg: profileImg.src,
-            bannerImg: bannerImg.src
+
+            firstName:
+                document.getElementById("firstName").value.trim(),
+
+            lastName:
+                document.getElementById("lastName").value.trim(),
+
+            email:
+                document.getElementById("email").value.trim(),
+
+            phone:
+                document.getElementById("phone").value.trim(),
+
+            profileImg:
+                profileImg.src,
+
+            bannerImg:
+                bannerImg.src
         };
 
+        // VALIDATION
         for (let key in profileData) {
+
             if (!profileData[key]) {
+
                 alert("⚠️ Please fill all fields");
+
                 return;
             }
         }
 
-        localStorage.setItem("userProfile", JSON.stringify(profileData));
+        // SAVE PROFILE
+        localStorage.setItem(
+            "userProfile",
+            JSON.stringify(profileData)
+        );
+
+        // UPDATE CURRENT USER
+        const updatedCurrentUser = {
+
+            fullname:
+                profileData.firstName +
+                " " +
+                profileData.lastName,
+
+            email:
+                profileData.email
+        };
+
+        localStorage.setItem(
+            "currentUser",
+            JSON.stringify(updatedCurrentUser)
+        );
+
+        // OPTIONAL LOGIN DATA
+        localStorage.setItem(
+            "fullname",
+            updatedCurrentUser.fullname
+        );
+
+        localStorage.setItem(
+            "email",
+            updatedCurrentUser.email
+        );
 
         alert("✅ Profile saved successfully!");
-        window.location.href = "dashboard.html";
 
+        window.location.href =
+            "";
     });
-    const savedProfile = JSON.parse(localStorage.getItem("userProfile"));
 
-if (savedProfile) {
-    document.getElementById("firstName").value = savedProfile.firstName;
-    document.getElementById("lastName").value = savedProfile.lastName;
-    document.getElementById("email").value = savedProfile.email;
-    document.getElementById("phone").value = savedProfile.phone;
-    profileImg.src = savedProfile.profileImg;
-    bannerImg.src = savedProfile.bannerImg;
-}
+    // ======================================
+    // LOAD PROFILE DATA
+    // ======================================
 
+    // USER FROM LOGIN
+    const currentUser =
+        JSON.parse(
+            localStorage.getItem("currentUser")
+        );
+
+    // SAVED PROFILE
+    const savedProfile =
+        JSON.parse(
+            localStorage.getItem("userProfile")
+        );
+
+    // AUTO FILL FROM LOGIN
+    if (currentUser) {
+
+        const nameParts =
+            currentUser.fullname.split(" ");
+
+        document.getElementById("firstName").value =
+            nameParts[0] || "";
+
+        document.getElementById("lastName").value =
+            nameParts.slice(1).join(" ") || "";
+
+        document.getElementById("email").value =
+            currentUser.email;
+    }
+
+    // LOAD SAVED PROFILE
+    if (savedProfile) {
+
+        document.getElementById("firstName").value =
+            savedProfile.firstName || "";
+
+        document.getElementById("lastName").value =
+            savedProfile.lastName || "";
+
+        document.getElementById("email").value =
+            savedProfile.email || "";
+
+        document.getElementById("phone").value =
+            savedProfile.phone || "";
+
+        if (savedProfile.profileImg) {
+
+            profileImg.src =
+                savedProfile.profileImg;
+        }
+
+        if (savedProfile.bannerImg) {
+
+            bannerImg.src =
+                savedProfile.bannerImg;
+        }
+    }
 </script>
-
 
 </body>
 </html>

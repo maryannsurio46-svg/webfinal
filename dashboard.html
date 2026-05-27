@@ -101,19 +101,23 @@
     }
 
     .transaction-history-section {
-        align-items: center;
-        margin-left: 320px;
-        margin-top: 20px;
-        padding: 15px;
-        font-size: 15px;
-        width: 880px;
-        background-color: #F9F9FA;
-        outline:3px solid #1F054B;
-        border-radius: 20px;
-        line-height: 0.9;
-        height: 620px;
-        position: fixed;
-    }
+    align-items: center;
+    margin-left: 320px;
+    margin-top: 20px;
+    padding: 15px;
+    font-size: 15px;
+    width: 880px;
+    background-color: #F9F9FA;
+    outline: 3px solid #1F054B;
+    border-radius: 20px;
+    line-height: 0.9;
+
+    height: 620px;
+
+    /* ✅ FIX SCROLL */
+    overflow-y: auto;
+    position: relative;
+}
 
     .section .income {
         background: #8CECA7;
@@ -153,10 +157,10 @@
     }
     /* Style for tables */
     .data-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 20px;
-    }
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
 
     .data-table th,
     .data-table td {
@@ -168,6 +172,23 @@
     .data-table th {
         background-color: #f2f2f2;
     }
+    .goal {
+    background: #F7F7F7;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 5px;
+    text-align: center;
+
+    /* ✅ NEW: scroll behavior */
+    max-height: 300px;
+    overflow-y: auto;
+}
+    .data-table thead th {
+    position: sticky;
+    top: 0;
+    background: #f2f2f2;
+    z-index: 1;
+}
 </style>
 
 <body>
@@ -177,8 +198,8 @@
             <i style="margin-top: 125px;" class="fa-solid fa-pen-to-square"></i>
         </a>
 
-        <h2 id="fullName">Patricia Bernales</h2>
-        <p id="userEmail">@bernales</p>
+       <h2 id="fullName"></h2>
+<p id="userEmail"></p>>
         <ul>
             <li><a href="dashboard.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
             <li><a href="report.html"><i class="fa-solid fa-chart-line"></i>Reports</a></li>
@@ -252,17 +273,9 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td id="goal-name"></td>
-                                <td id="goal-amount"></td>
-                                <td id="goal-saved"></td>
-                                <td id="goal-remaining"></td>
-                                <td id="goal-actions">
-                                    <button id="add-money">Add Money</button>
-                                </td>
-                            </tr>
-                        </tbody>
+                        <tbody id="goals-table-body">
+
+</tbody>
                     </table>
                 </div>
             </div>
@@ -270,23 +283,42 @@
     </div>
     <script>
 document.addEventListener("DOMContentLoaded", () => {
+
+    // =========================
+    // USER PROFILE
+    // =========================
     const userProfile = JSON.parse(localStorage.getItem("userProfile"));
 
-    if (!userProfile) return;
+    if (userProfile) {
 
-    const fullName = `${userProfile.firstName} ${userProfile.lastName}`;
+        const fullName =
+            `${userProfile.firstName} ${userProfile.lastName}`;
 
-    // Update full name
-    const nameEl = document.getElementById("fullName");
-    if (nameEl) nameEl.textContent = fullName;
+        // Full name
+        const nameEl =
+            document.getElementById("fullName");
 
-    // Update email
-    const emailEl = document.getElementById("userEmail");
-    if (emailEl) emailEl.textContent = userProfile.email;
+        if (nameEl) {
+            nameEl.textContent = fullName;
+        }
 
-    // Update profile image
-    const imgEl = document.getElementById("navProfileImg");
-    if (imgEl) imgEl.src = userProfile.profileImg;
+        // Email
+        const emailEl =
+            document.getElementById("userEmail");
+
+        if (emailEl) {
+            emailEl.textContent = userProfile.email;
+        }
+
+        // Profile image
+        const imgEl =
+            document.getElementById("navProfileImg");
+
+        if (imgEl && userProfile.profileImg) {
+            imgEl.src = userProfile.profileImg;
+        }
+    }
+
 });
 
         document.getElementById("search").addEventListener("keydown", function (event) {
@@ -348,66 +380,483 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("No page found related to: " + query);
     }
 });
-        document.getElementById('delete-data').addEventListener('click', function() {
-            if (confirm('Are you sure you want to delete all data?')) {
-                localStorage.clear();
-                alert('Data deleted successfuly!');
-                location.reload();
-            }
-        });
+        document.getElementById("delete-data").addEventListener("click", function (e) {
+    e.preventDefault();
+    openDeleteModal();
+});
+
+function openDeleteModal() {
+    const modal = document.createElement("div");
+
+    modal.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        z-index: 9999;
+        width: 300px;
+        font-family: Arial;
+    `;
+
+    modal.innerHTML = `
+        <h3>Delete Data</h3>
+
+        <label><input type="checkbox" id="del-transactions"> Transactions</label><br>
+        <label><input type="checkbox" id="del-goals"> Savings Goals</label><br>
+        <label><input type="checkbox" id="del-budget"> Budget Limits</label><br><br>
+
+        <button id="confirm-delete" style="
+            background:red;
+            color:white;
+            padding:8px;
+            border:none;
+            width:100%;
+            cursor:pointer;
+            border-radius:5px;
+        ">Delete Selected</button>
+
+        <button id="close-delete" style="
+            margin-top:10px;
+            width:100%;
+            padding:8px;
+        ">Cancel</button>
+    `;
+
+    document.body.appendChild(modal);
+
+    // CLOSE
+    modal.querySelector("#close-delete").addEventListener("click", () => {
+        document.body.removeChild(modal);
+    });
+
+    // CONFIRM DELETE
+    modal.querySelector("#confirm-delete").addEventListener("click", () => {
+
+        const delTransactions = document.getElementById("del-transactions").checked;
+        const delGoals = document.getElementById("del-goals").checked;
+        const delBudget = document.getElementById("del-budget").checked;
+
+        if (!delTransactions && !delGoals && !delBudget) {
+            alert("Please select at least one option.");
+            return;
+        }
+
+        if (delTransactions) {
+            localStorage.removeItem("transactions");
+            localStorage.removeItem("totalIncome");
+            localStorage.removeItem("totalExpense");
+        }
+
+        if (delGoals) {
+            localStorage.removeItem("allSavingsGoals");
+            localStorage.removeItem("financialGoalHistory");
+            localStorage.removeItem("savingsGoal");
+        }
+
+        if (delBudget) {
+            localStorage.removeItem("budgetCategories");
+            localStorage.removeItem("budgetLimit");
+            localStorage.removeItem("budgetProgress");
+        }
+
+        alert("Selected data deleted successfully!");
+        location.reload();
+    });
+}
         document.addEventListener('DOMContentLoaded', function() {
             // Function to retrieve data from local storage
             function getData(key) {
                 return localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)) : null;
             }
+            function saveData(key, value) {
+    localStorage.setItem(key, JSON.stringify(value));
+}
             // Function to format numbers as currency
             function formatCurrency(amount) {
                 return '' + parseFloat(amount).toFixed(2);
             }
-            // Function to display a savings goal
-            function displaySavingsGoal(savingsGoal, savingsGoalEl) {
-                const goalNameEl = document.getElementById('goal-name');
-                const goalAmountEl = document.getElementById('goal-amount');
-                const goalSavedEl = document.getElementById('goal-saved');
-                const goalRemainingEl = document.getElementById('goal-remaining');
-                const goalActionsEl = document.getElementById('goal-actions');
-                if (savingsGoal) {
-                    goalNameEl.textContent = savingsGoal.name;
-                    goalAmountEl.textContent = formatCurrency(savingsGoal.amount);
-                    goalSavedEl.textContent = formatCurrency(savingsGoal.saved);
-                    const remainingAmount = savingsGoal.amount - savingsGoal.saved;
-                    goalRemainingEl.textContent = formatCurrency(remainingAmount);
-                    //Display Complete Message or the button
-                    if (remainingAmount <= 0) {
-                        goalActionsEl.textContent = 'Complete!';
-                    } else {
-                        goalActionsEl.innerHTML = '<button id="add-money">Add Money</button>';
-                        const addMoneyBtn = document.getElementById('add-money');
-                        if (!addMoneyBtn.dataset.listener) {
-                            addMoneyBtn.addEventListener('click', function() {
-                                const addAmount = parseFloat(prompt('Enter amount to add to savings (Remaining: ' + formatCurrency(remainingAmount) + '):'));
-                                if (!isNaN(addAmount) && addAmount > 0) {
-                                    savingsGoal.saved = parseFloat(savingsGoal.saved) + addAmount;
-                                    if (savingsGoal.saved >= savingsGoal.amount) {
-                                        savingsGoal.saved = savingsGoal.amount; // Limit saved amount to the goal
-                                        alert('Congratulations! You have reached your savings goal.');
-                                    }
-                                    localStorage.setItem('savingsGoal', JSON.stringify(savingsGoal));
-                                    displaySavingsGoal(savingsGoal, savingsGoalEl); // Update display
-                                } else {
-                                    alert('Invalid amount.');
-                                }
-                            });
-                            addMoneyBtn.dataset.listener = true; // set the data so the event is not set again
-                        }
-                    }
-                } else {
-                    goalNameEl.textContent = 'No goals set. Go to Budgeting tab to set up goals.';
-                    goalAmountEl.textContent = '';
-                    goalSavedEl.textContent = '';
-                    goalRemainingEl.textContent = '';
-                    goalActionsEl.textContent = '';
+            function cleanupCompletedGoals() {
+
+    let allGoals = getData("allSavingsGoals") || [];
+    let history = getData("financialGoalHistory") || [];
+
+    const activeGoals = [];
+
+    allGoals.forEach(goal => {
+        if (goal.saved >= goal.amount) {
+
+            history.push({
+                name: goal.name,
+                amount: goal.amount,
+                saved: goal.saved,
+                status: "Completed",
+                createdAt: new Date().toLocaleString()
+            });
+
+        } else {
+            activeGoals.push(goal);
+        }
+    });
+
+    saveData("allSavingsGoals", activeGoals);
+    saveData("financialGoalHistory", history);
+}
+cleanupCompletedGoals();
+function displaySavingsGoal(allGoals) {
+
+    const goalsTableBody =
+        document.getElementById(
+            "goals-table-body"
+        );
+
+    goalsTableBody.innerHTML = "";
+
+    if (
+        !allGoals ||
+        allGoals.length === 0
+    ) {
+
+        goalsTableBody.innerHTML = `
+            <tr>
+                <td colspan="5"
+                    style="
+                        text-align:center;
+                        padding:20px;
+                    ">
+                    No savings goals yet.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+    allGoals.forEach((goal, index) => {
+
+        if (!goal.entries) {
+
+            goal.entries = [];
+        }
+
+        const remaining =
+            goal.amount - goal.saved;
+
+        const isFull =
+            goal.entries.length >= 3;
+
+        const status =
+            remaining <= 0
+            ? "✅ Completed"
+            : "⏳ In Progress";
+
+        const row =
+            document.createElement("tr");
+
+        row.innerHTML = `
+
+            <td>${goal.name}</td>
+
+            <td>
+                ${formatCurrency(goal.amount)}
+            </td>
+
+            <td>
+                ${formatCurrency(goal.saved)}
+            </td>
+
+            <td>
+                ${formatCurrency(remaining)}
+            </td>
+
+            <td>
+
+                <div style="
+                    display:flex;
+                    flex-direction:column;
+                    gap:5px;
+                ">
+
+                    <div style="
+                        display:flex;
+                        gap:5px;
+                    ">
+
+                        <button
+                            class="add-money-btn"
+                            data-index="${index}">
+                            Add
+                        </button>
+
+                        <button
+                            class="deduct-money-btn"
+                            data-index="${index}">
+                            Deduct
+                        </button>
+
+                    </div>
+
+                    <div style="
+                        font-size:12px;
+                        font-weight:bold;
+                        color:${isFull ? 'green' : '#333'};
+                    ">
+                        ${goal.status === "" ? "Completed" : goal.entries.length + "/3"}
+                    </div>
+
+                    <div style="
+                        font-size:12px;
+                        font-weight:bold;
+                        color:${remaining <= 0 ? 'green' : 'orange'};
+                    ">
+                        ${status}
+                    </div>
+
+                </div>
+
+            </td>
+        `;
+
+        goalsTableBody.appendChild(row);
+    });
+
+    // =========================================
+    // ADD MONEY
+    // =========================================
+    document.querySelectorAll(
+        ".add-money-btn"
+    ).forEach(button => {
+
+        button.addEventListener(
+            "click",
+            function () {
+
+                const index =
+                    this.dataset.index;
+
+                let allGoals =
+                    getData(
+                        "allSavingsGoals"
+                    ) || [];
+
+                let goal =
+                    allGoals[index];
+
+                if (
+                    goal.entries.length >= 3
+                ) {
+
+                    alert(
+                        "Maximum of 3 entries reached."
+                    );
+
+                    return;
                 }
+
+                const amount =
+                    parseFloat(
+                        prompt(
+                            "Enter amount to add:"
+                        )
+                    );
+
+                if (
+                    !isNaN(amount) &&
+                    amount > 0
+                ) {
+
+                    goal.entries.push(amount);
+
+                    goal.saved =
+                        goal.entries.reduce(
+                            (a, b) => a + b,
+                            0
+                        );
+
+                    if (
+                        goal.saved >= goal.amount
+                    ) {
+
+                        goal.status =
+                            "Completed";
+                    }
+
+                    localStorage.setItem(
+                        "allSavingsGoals",
+                        JSON.stringify(allGoals)
+                    );
+
+                    displaySavingsGoal(
+                        allGoals
+                    );
+                }
+            }
+        );
+    });
+
+    // =========================================
+    // DEDUCT MONEY
+    // =========================================
+    document.querySelectorAll(
+        ".deduct-money-btn"
+    ).forEach(button => {
+
+        button.addEventListener(
+            "click",
+            function () {
+
+                const index =
+                    this.dataset.index;
+
+                let allGoals =
+                    getData(
+                        "allSavingsGoals"
+                    ) || [];
+
+                let goal =
+                    allGoals[index];
+
+                let deductAmount =
+                    parseFloat(
+                        prompt(
+                            "Enter amount to deduct:"
+                        )
+                    );
+
+                if (
+                    isNaN(deductAmount) ||
+                    deductAmount <= 0
+                ) {
+
+                    alert("Invalid amount.");
+
+                    return;
+                }
+
+                if (
+                    deductAmount >
+                    goal.saved
+                ) {
+
+                    alert(
+                        "Deduction exceeds saved amount."
+                    );
+
+                    return;
+                }
+
+                for (
+                    let i =
+                        goal.entries.length - 1;
+                    i >= 0;
+                    i--
+                ) {
+
+                    if (
+                        deductAmount <= 0
+                    ) break;
+
+                    let used =
+                        Math.min(
+                            goal.entries[i],
+                            deductAmount
+                        );
+
+                    goal.entries[i] -= used;
+
+                    deductAmount -= used;
+
+                    if (
+                        goal.entries[i] <= 0
+                    ) {
+
+                        goal.entries.splice(
+                            i,
+                            1
+                        );
+                    }
+                }
+
+                goal.saved =
+                    goal.entries.reduce(
+                        (a, b) => a + b,
+                        0);
+                    // CHECK IF GOAL IS COMPLETED
+if (goal.saved >= goal.amount) {
+
+    // 1. MARK COMPLETED
+    goal.status = "Completed";
+
+    // 2. MOVE TO HISTORY
+    let history = getData("financialGoalHistory") || [];
+
+    history.push({
+        name: goal.name,
+        amount: goal.amount,
+        saved: goal.saved,
+        status: "Completed",
+        createdAt: new Date().toLocaleString()
+    });
+
+    saveData("financialGoalHistory", history);
+
+    // 3. REMOVE FROM ACTIVE GOALS (IMPORTANT: frees slot)
+    allGoals.splice(index, 1);
+    saveData("allSavingsGoals", allGoals);
+
+    // 4. UPDATE UI
+    displaySavingsGoal(allGoals);
+
+    alert("🎉 Goal completed and moved to history!");
+
+    return;
+}
+
+                localStorage.setItem(
+                    "allSavingsGoals",
+                    JSON.stringify(allGoals)
+                );
+
+                displaySavingsGoal(
+                    allGoals
+                );
+            }
+        );
+    });
+addMoneyBtn.addEventListener('click', function () {
+
+    // ❌ BLOCK IF 3 ENTRIES ALREADY EXIST
+    if (savingsGoal.entries.length >= 3) {
+        alert("Maximum of 3 savings entries reached. Deduct or complete one first.");
+        return;
+    }
+
+    const addAmount = parseFloat(prompt('Enter amount to add to savings:'));
+
+    if (!isNaN(addAmount) && addAmount > 0) {
+
+        // add entry
+        savingsGoal.entries.push(addAmount);
+
+        // recompute saved
+        savingsGoal.saved = savingsGoal.entries.reduce((a, b) => a + b, 0);
+
+        localStorage.setItem('savingsGoal', JSON.stringify(savingsGoal));
+        displaySavingsGoal(savingsGoal, savingsGoalEl);
+
+    } else {
+        alert('Invalid amount.');
+    }
+
+    if (savingsGoal.entries.length >= 3) {
+    localStorage.setItem("savingsLimitReached", "true");
+
+    localStorage.setItem("savingsLimitReached", "false");
+}
+});
             }
             // Function to display budget progress
             function displayBudgetProgress(budgetLimit, budgetProgressEl) {
@@ -441,7 +890,8 @@ document.addEventListener("DOMContentLoaded", () => {
             // Load and display data
             let totalIncome = getData('totalIncome') || 0;
             let totalExpense = getData('totalExpense') || 0;
-            let savingsGoal = getData('savingsGoal') || null;
+            let allGoals =
+    getData("allSavingsGoals") || [];
             let budgetLimit = getData('budgetLimit') || null;
             // Calculate total savings
             let totalSavings = totalIncome - totalExpense;
@@ -451,7 +901,7 @@ document.addEventListener("DOMContentLoaded", () => {
             totalExpenseEl.innerHTML = 'Total Expense <br>' + formatCurrency(totalExpense);
             totalSavingsEl.innerHTML = 'Total Savings <br>' + formatCurrency(totalSavings);
             // Display savings goal
-            displaySavingsGoal(savingsGoal, savingsGoalEl);
+            displaySavingsGoal(allGoals);
             // Display budget progress
             displayBudgetProgress(budgetLimit, budgetProgressEl);
         });
